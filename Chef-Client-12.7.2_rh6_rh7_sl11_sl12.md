@@ -34,21 +34,21 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 2. For SLES 11 you will need to build Openssl  
 
     ```
-     cd /<source_root>/
-     wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
-     tar zxf openssl-1.0.2g.tar.gz
-     ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
-     make
-     sudo make install
+      cd /<source_root>/
+      wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
+      tar zxf openssl-1.0.2g.tar.gz
+      ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
+      make
+      sudo make install
    ```
     
 3. For RHEL 6.6 and SLES 11 you will need to build Ruby 2.2.4 
 
    ```
-    cd /<source_root>/
-    wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
-    tar zxf ruby-2.2.4.tar.gz
-    cd ruby-2.2.4
+     cd /<source_root>/
+     wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
+     tar zxf ruby-2.2.4.tar.gz
+     cd ruby-2.2.4
    ```
 	
   For SLES 11
@@ -92,7 +92,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
    For SLES 12
    ```
-      export PATH=$PATH:/<source_root>/chef/bin
+     export PATH=$PATH:/<source_root>/chef/bin
    ```
        
    _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
@@ -118,14 +118,14 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 	
    For RHEL 7.1 & SLES 12
    ```
-    sudo bundle install
+     sudo bundle install
     ```
 9. Comment out the rdoc/task line in the Rakefile as below
 
     ```
-     require "chef-config/package_task"
-     #require "rdoc/task"
-     require_relative "tasks/rspec"
+      require "chef-config/package_task"
+      #require "rdoc/task"
+      require_relative "tasks/rspec"
     ```
     
 10. Build the Chef Client ruby gem packages
