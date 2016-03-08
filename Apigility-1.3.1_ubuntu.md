@@ -37,33 +37,32 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 3. Get the source for Apigility
         
   ```
-		cd /<source_root>/
-        git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
-        cd zf-apigility-skeleton 
-        git checkout 1.3.1
+    cd /<source_root>/
+    git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
+    cd zf-apigility-skeleton 
+    git checkout 1.3.1
   ```
 
 4. Install composer
 
  ```
-        curl -s https://getcomposer.org/installer | php --
-        ./composer.phar -n update
-        ./composer.phar -n install
-        
+   curl -s https://getcomposer.org/installer | php --
+   ./composer.phar -n update
+   ./composer.phar -n install
  ```
 
 5. Put the skeleton/app in development mode
 
  ```
-        php public/index.php development enable
+   php public/index.php development enable
  ```
         
 6. Start the Apigility application
 
  ```
-        export IP=$(hostname -i)
-        cd  /<source_root>/zf-apigility-skeleton
-        php -S $IP:8080 -t public public/index.php
+   export IP=$(hostname -i)
+   cd  /<source_root>/zf-apigility-skeleton
+   php -S $IP:8080 -t public public/index.php
  ```
 
 ## References:
