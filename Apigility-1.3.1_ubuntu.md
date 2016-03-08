@@ -11,10 +11,9 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 
 #### Section 1: Install the following dependencies
-
-	```
+```
 	sudo apt-get update git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
-	```
+```
 
 #### Section 2: Build and install
 1. Download, configure and install PHP with openssl
@@ -37,12 +36,12 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 3. Get the source for Apigility
         
-        ```
+  ```
 	cd /<source_root>/
         git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
         cd zf-apigility-skeleton 
         git checkout 1.3.1
-	```
+  ```
 
 4. Install composer
 
