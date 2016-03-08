@@ -60,7 +60,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 6. Start the Apigility application
 
  ```
-   export IP=$(hostname -i)
+  export IP=$(hostname -i)
    cd  /<source_root>/zf-apigility-skeleton
    php -S $IP:8080 -t public public/index.php
  ```
