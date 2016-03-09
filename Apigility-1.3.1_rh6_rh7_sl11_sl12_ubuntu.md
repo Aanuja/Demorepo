@@ -1,6 +1,6 @@
 # Building Apigility
 
-Apigility version 1.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 , SLES 12/11 and Ubuntu.
+Apigility version 1.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 , SLES 12/11 and UBUNTU.
 
 ##### General Notes:
       
@@ -11,6 +11,13 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 ### Section 1: Install the following dependencies
 
+	UBUNTU:
+	```
+	sudo apt-get update
+	sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
+
+	```
+	
 * Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
     
 * Other dependencies
@@ -34,13 +41,6 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	SLES11:
 	```
 	zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
-
-	```
-	
-	UBUNTU:
-	```
-	sudo apt-get update
-	sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
 
 	```
 	
