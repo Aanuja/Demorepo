@@ -52,16 +52,17 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
      cd ruby-2.2.4
    ```
 	
-  For SLES 11
+ * For SLES 11
   ```
     ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/g
   ```
-	  
-  For RHEL 6.6
-  ```
-    ./configure
-  ```
 
+
+ * For RHEL6:  
+  ```
+      ./configure 
+  ```
+        
 4. Build Ruby 
   
   ```
