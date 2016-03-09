@@ -185,7 +185,16 @@ If you'd like to test the Chef client you've just built and installed, just foll
         ```
           sudo yum install -y which 
         ```		
-		
+	
+   3. The following test case failures are intermittent and are mostly seen on VM with low memory condition
+      1. Chef::Resource::Group group modify action when there is a group behaves like correct group management when no users exist when append is not set should raise an error
+      2. Chef::Resource::Group group modify action when there is a group behaves like correct group management when no users exist when append is set should raise an error
+      3.  Chef::Resource::Group group modify action when there is a group behaves like correct group management when the users exist when append is not set when group already contains some users should remove all existing users and only add the new users to the group
+      4. Chef::Resource::Group group manage action when there is a group behaves like correct group management when no users exist when append is not set should raise an error
+      5. Chef::Resource::Group group manage action when there is a group behaves like correct group management when no users exist when append is set should raise an error
+      6. Chef::Resource::Group group manage action when there is a group behaves like correct group management when the users exist when append is not set when group already contains some users should remove all existing users and only add the new users to the group
+      
+
 3. Visit https://github.com/chef/chef#testing for more   
 
 ## References:
