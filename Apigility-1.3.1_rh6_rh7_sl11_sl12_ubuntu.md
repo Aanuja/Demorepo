@@ -50,40 +50,40 @@ sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxm
  
 	Steps for RHEL7.1 and SLES12
 	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/local/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make
-			make install
+	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+	./configure --prefix=/usr/local/php --with-apxs2=/usr/local/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+	make
+	make install
 	```
 	
 	Steps for RHEL6.6
 	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make
-			make install
+	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+	./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+	make
+	make install
 	```
 	
 	Steps for SLES11
 	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 	--with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make 
-			make install
+	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+	./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 	--with-config-file-path=/usr/local/php --with-mysql --with-openssl
+	make 
+	make install
 	```
 	
 	Steps for UBUNTU
 	```
-			cd /<source_root>/
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz
-			cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make
-			sudo make install
+	cd /<source_root>/
+	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+	tar xvzf php-5.6.8.tar.gz
+	cd php-5.6.8
+	./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+	make
+	sudo make install
 	```
 	
 2. Set environment path for the PHP
