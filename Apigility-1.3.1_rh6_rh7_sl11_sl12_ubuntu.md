@@ -17,7 +17,8 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 sudo apt-get update
 sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
 ```
-	
+Note: Skip "Install Apache Http Server" for UBUNTU as it is installed using apt-get in the above commands.
+
 * Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
     
 * Other dependencies
