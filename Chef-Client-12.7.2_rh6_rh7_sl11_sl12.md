@@ -23,7 +23,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     
     For SLES 11
     ```
-      sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
+      sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
     ```
 
     For SLES 12
