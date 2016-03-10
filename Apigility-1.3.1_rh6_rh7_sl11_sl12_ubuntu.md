@@ -17,7 +17,7 @@ yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make
 ```
 RHEL6.6:
 ```
-yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf 		make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
+yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
 ```
 
 SLES12:
