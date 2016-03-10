@@ -13,135 +13,135 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
     For RHEL 7.1 
     ```
-      sudo yum install -y git ruby ruby-devel rubygems rubygem-bundler gcc make wget which tar
+    sudo yum install -y git ruby ruby-devel rubygems rubygem-bundler gcc make wget which tar
     ```
 	
     For RHEL 6.6 
     ```
-      sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel 	  
+    sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel 	  
     ```
     
     For SLES 11
     ```
-      sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
+    sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
     ```
 
     For SLES 12
     ```
-      sudo zypper install -y git ruby2.1 ruby2.1-devel ruby2.1-rubygem-bundler gcc make which tar    
+    sudo zypper install -y git ruby2.1 ruby2.1-devel ruby2.1-rubygem-bundler gcc make which tar    
     ```
 
 2. For SLES 11 you will need to build Openssl  
 
     ```
-      cd /<source_root>/
-      wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
-      tar zxf openssl-1.0.2g.tar.gz
-	  cd openssl-1.0.2g
-      ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
-      make
-      sudo make install
+    cd /<source_root>/
+    wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
+    tar zxf openssl-1.0.2g.tar.gz
+    cd openssl-1.0.2g
+    ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
+    make
+    sudo make install
    ```
     
 3. For RHEL 6.6 and SLES 11 you will need to download Ruby 2.2.4 source code
 
    ```
-     cd /<source_root>/
-     wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
-     tar zxf ruby-2.2.4.tar.gz
-     cd ruby-2.2.4
+   cd /<source_root>/
+   wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
+   tar zxf ruby-2.2.4.tar.gz
+   cd ruby-2.2.4
    ```
 	
   For SLES11
   ```
-    ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/g
+  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/g
   ```
 
   For RHEL6.6 
   ```
-      ./configure 
+  ./configure 
   ```
         
 4. Build the Ruby source code
   
   ```
-    make
-    make test	  
-    sudo make install
+  make
+  make test	  
+  sudo make install
   ```
 	
 5. Move to the location you wish to store the Chef source in
 
-    ```
-      cd /<source_root>/
-    ```
+  ```
+  cd /<source_root>/
+  ```
 
 6. Clone the github Chef client repository checkout the correct version
 
-    ```
-      git clone https://github.com/chef/chef.git
-      cd chef
-      git checkout 12.7.2
-    ```
+  ```
+  git clone https://github.com/chef/chef.git
+  cd chef
+  git checkout 12.7.2
+  ```
 
 7. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
 
-    ```
-      export GEM_HOME=/home/<USER>/.gem/ruby
-      export PATH=/home/<USER>/.gem/ruby/bin:$PATH
-    ``` 
+  ```
+  export GEM_HOME=/home/<USER>/.gem/ruby
+  export PATH=/home/<USER>/.gem/ruby/bin:$PATH
+  ``` 
 
-    _where `<USER>` is the standard user you are installing under._
+   _where `<USER>` is the standard user you are installing under._
 
-   For SLES 12
-   ```
-     export PATH=$PATH:/<source_root>/chef/bin
-   ```
+  For SLES 12
+  ```
+  export PATH=$PATH:/<source_root>/chef/bin
+  ```
        
-   _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
+  _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
 	
 8. Install the required version of the bundler ruby gem
 
    For RHEL 6.6 & SLES 11
-   ```
-     gem install bundler -v '1.7.3'
-    ```
+  ```
+  gem install bundler -v '1.7.3'
+  ```
 	
    For RHEL 7.1 & SLES 12
-   ```
-     sudo gem install bundler -v '1.7.3'
-    ```
+  ```
+  sudo gem install bundler -v '1.7.3'
+  ```
 	
 9. Use bundler to install Chef Client's ruby gem dependencies
 
-    ```
-      bundle install
-    ```
+  ```
+  bundle install
+  ```
 10. Comment out the rdoc/task line in the Rakefile as below
 
-    ```
-      require "chef-config/package_task"
-      #require "rdoc/task"
-      require_relative "tasks/rspec"
-    ```
+  ```
+  require "chef-config/package_task"
+  #require "rdoc/task"
+  require_relative "tasks/rspec"
+  ```
     
 11. Build the Chef Client ruby gem packages
 
-    ```
-      bundle exec rake gem
-    ```
+  ```
+  bundle exec rake gem
+  ```
 
 12. Install the gem you just built
 
     For RHEL 6.6 & SLES 11
-    ```
-      ls pkg/*.gem | grep -v mingw32 | xargs gem install
-    ```    
+  ```
+  ls pkg/*.gem | grep -v mingw32 | xargs gem install
+  ```    
 	
     For RHEL 7.1 & SLES 12
-    ```
-      ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
-    ``` 
+  ```
+  ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
+  ``` 
 13. Chef client is now built and installed (verify with chef-client or knife)
 
 
@@ -151,18 +151,18 @@ If you'd like to test the Chef client you've just built and installed, just foll
 
 1. Run the test suite
    	
-   ```
-     cd /<source_root>/chef/
-     bundle exec rake spec
-   ```  
+  ```
+  cd /<source_root>/chef/
+  bundle exec rake spec
+  ```  
    To run a Single Test File
-   ```  
-     bundle exec rspec spec/PATH/TO/FILE_spec.rb
-   ```  
+  ```  
+  bundle exec rspec spec/PATH/TO/FILE_spec.rb
+  ```  
    To Run a Subset of Tests
-   ```
-     bundle exec rspec spec/PATH/TO/DIR
-   ```
+  ```
+  bundle exec rspec spec/PATH/TO/DIR
+  ```
    
 2. Notes on Verification Test Failures (not specific to Linux on z Systems)  
    1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, add following  
