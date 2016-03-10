@@ -11,40 +11,34 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 ### Section 1: Install the following dependencies
 
- UBUNTU:
+RHEL7.1:
+```
+yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel 
+```
+RHEL6.6:
+```
+yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf 		make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
+```
 
+SLES12:
+```
+zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
+```
+	
+SLES11:
+```
+zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
+```
+	
+UBUNTU:
 ```
 sudo apt-get update
 sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
 ```
-Note: Skip "Install Apache Http Server" for UBUNTU as it is installed using apt-get in the above commands.
 
+For RHEL 6.6/7 and SLES 11/12:
 * Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
-    
-* Other dependencies
-
-	RHEL7.1:
-	```
-	yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
-
-	```
-	RHEL6.6:
-	```
-	yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf 		make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
-	```
-
-	SLES12:
-	```
-	zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
-
-	```
-	
-	SLES11:
-	```
-	zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
-
-	```
-	
+   
 #### Section 2: Build and install
 1. Download, configure and install PHP with openssl
  
