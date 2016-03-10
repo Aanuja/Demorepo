@@ -54,7 +54,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 	
   For SLES11
   ```
-  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/g
+  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
   ```
 
   For RHEL6.6 
