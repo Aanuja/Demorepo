@@ -152,16 +152,16 @@ If you'd like to test the Chef client you've just built and installed, just foll
 1. Run the test suite
    	
    ```
-     cd /<source_root>/chef/
-     bundle exec rake spec
+   cd /<source_root>/chef/
+   bundle exec rake spec
    ```  
    To run a Single Test File
    ```  
-     bundle exec rspec spec/PATH/TO/FILE_spec.rb
+   bundle exec rspec spec/PATH/TO/FILE_spec.rb
    ```  
    To Run a Subset of Tests
    ```
-     bundle exec rspec spec/PATH/TO/DIR
+   bundle exec rspec spec/PATH/TO/DIR
    ```
    
 2. Notes on Verification Test Failures (not specific to Linux on z Systems)  
@@ -172,18 +172,18 @@ If you'd like to test the Chef client you've just built and installed, just foll
 
         * For SLES12: add HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
         ```
-          let(:critical_env_vars) { %w(PATH HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+        let(:critical_env_vars) { %w(PATH HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
         ```  
 
         * For RHEL6, RHEL7 and SLES11: add GEM_HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
         ```
-          let(:critical_env_vars) { %w(PATH GEM_HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
-		```
+        let(:critical_env_vars) { %w(PATH GEM_HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+	```
    2. If test case "Chef::Provider::Package::Rubygems::AlternateGemEnvironment determines the installed versions of gems from the source index (part2: the unmockening)" fails, install the following
 	
 		* For RHEL6:  
         ```
-          sudo yum install -y which 
+        sudo yum install -y which 
         ```		
 		
 3. Visit https://github.com/chef/chef#testing for more   
