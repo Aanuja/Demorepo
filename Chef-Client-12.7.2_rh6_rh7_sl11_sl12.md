@@ -13,35 +13,35 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
     For RHEL 7.1 
     ```
-      sudo yum install -y git ruby ruby-devel rubygems rubygem-bundler gcc make wget which tar
+    sudo yum install -y git ruby ruby-devel rubygems rubygem-bundler gcc make wget which tar
     ```
 	
     For RHEL 6.6 
     ```
-      sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel 	  
+    sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel 	  
     ```
     
     For SLES 11
     ```
-      sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
+    sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel	      
     ```
 
     For SLES 12
     ```
-      sudo zypper install -y git ruby2.1 ruby2.1-devel ruby2.1-rubygem-bundler gcc make which tar    
+    sudo zypper install -y git ruby2.1 ruby2.1-devel ruby2.1-rubygem-bundler gcc make which tar    
     ```
 
 2. For SLES 11 you will need to build Openssl  
 
     ```
-      cd /<source_root>/
-      wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
-      tar zxf openssl-1.0.2g.tar.gz
-	  cd openssl-1.0.2g
-      ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
-      make
-      sudo make install
-   ```
+    cd /<source_root>/
+    wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
+    tar zxf openssl-1.0.2g.tar.gz
+    cd openssl-1.0.2g
+    ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
+    make
+    sudo make install
+    ```
     
 3. For RHEL 6.6 and SLES 11 you will need Ruby 2.2.4
    
@@ -73,29 +73,29 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 4. Move to the location you wish to store the Chef source in
 
     ```
-      cd /<source_root>/
+    cd /<source_root>/
     ```
 
 5. Clone the github Chef client repository checkout the correct version
 
     ```
-      git clone https://github.com/chef/chef.git
-      cd chef
-      git checkout 12.7.2
+    git clone https://github.com/chef/chef.git
+    cd chef
+    git checkout 12.7.2
     ```
 
 6. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
 
     ```
-      export GEM_HOME=/home/<USER>/.gem/ruby
-      export PATH=/home/<USER>/.gem/ruby/bin:$PATH
+    export GEM_HOME=/home/<USER>/.gem/ruby
+    export PATH=/home/<USER>/.gem/ruby/bin:$PATH
     ``` 
 
     _where `<USER>` is the standard user you are installing under._
 
    For SLES 12
    ```
-     export PATH=$PATH:/<source_root>/chef/bin
+   export PATH=$PATH:/<source_root>/chef/bin
    ```
        
    _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
@@ -104,44 +104,44 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
    For RHEL 6.6 & SLES 11
    ```
-     gem install bundler -v '1.7.3'
-    ```
+   gem install bundler -v '1.7.3'
+   ```
 	
    For RHEL 7.1 & SLES 12
    ```
-     sudo gem install bundler -v '1.7.3'
-    ```
+   sudo gem install bundler -v '1.7.3'
+   ```
 	
 8. Use bundler to install Chef Client's ruby gem dependencies
 
-    ```
-      bundle install
-    ```
+   ```
+   bundle install
+   ```
 9. Comment out the rdoc/task line in the Rakefile as below
 
-    ```
-      require "chef-config/package_task"
-      #require "rdoc/task"
-      require_relative "tasks/rspec"
-    ```
+   ```
+   require "chef-config/package_task"
+   #require "rdoc/task"
+   require_relative "tasks/rspec"
+   ```
     
 10. Build the Chef Client ruby gem packages
 
-    ```
-      bundle exec rake gem
-    ```
+   ```
+   bundle exec rake gem
+   ```
 
 11. Install the gem you just built
 
     For RHEL 6.6 & SLES 11
-    ```
-      ls pkg/*.gem | grep -v mingw32 | xargs gem install
-    ```    
+   ```
+   ls pkg/*.gem | grep -v mingw32 | xargs gem install
+   ```    
 	
     For RHEL 7.1 & SLES 12
-    ```
-      ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
-    ``` 
+   ```
+   ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
+   ``` 
 12. Chef client is now built and installed (verify with chef-client or knife)
 
 
