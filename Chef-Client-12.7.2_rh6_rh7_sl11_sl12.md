@@ -43,40 +43,40 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       sudo make install
    ```
     
-3. For RHEL 6.6 and SLES 11 you will need to download Ruby 2.2.4 source code
-
-   ```
-     cd /<source_root>/
-     wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
-     tar zxf ruby-2.2.4.tar.gz
-     cd ruby-2.2.4
-   ```
+3. For RHEL 6.6 and SLES 11 you will need Ruby 2.2.4
+   
+	3.1. Download the source code
+	```
+     		cd /<source_root>/
+		wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
+     		tar zxf ruby-2.2.4.tar.gz
+     		cd ruby-2.2.4
+	```
 	
   For SLES 11
-  ```
-    ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
-  ```
+	```
+    	  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
+	```
 	  
   For RHEL 6.6
-  ```
-    ./configure
-  ```
+	```
+    	  ./configure
+	```
 
-4. Build Ruby 
-  
-  ```
-    make
-    make test	  
-    sudo make install
-  ```
+   3.2. Build the source code
+```
+    	  make
+    	  make test	  
+	  sudo make install
+```
 	
-5. Move to the location you wish to store the Chef source in
+4. Move to the location you wish to store the Chef source in
 
     ```
       cd /<source_root>/
     ```
 
-6. Clone the github Chef client repository checkout the correct version
+5. Clone the github Chef client repository checkout the correct version
 
     ```
       git clone https://github.com/chef/chef.git
@@ -84,7 +84,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       git checkout 12.7.2
     ```
 
-7. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
+6. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
 
     ```
       export GEM_HOME=/home/<USER>/.gem/ruby
@@ -100,7 +100,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
        
    _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
 	
-8. Install the required version of the bundler ruby gem
+7. Install the required version of the bundler ruby gem
 
    For RHEL 6.6 & SLES 11
    ```
@@ -112,12 +112,12 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
      sudo gem install bundler -v '1.7.3'
     ```
 	
-9. Use bundler to install Chef Client's ruby gem dependencies
+8. Use bundler to install Chef Client's ruby gem dependencies
 
     ```
       bundle install
     ```
-10. Comment out the rdoc/task line in the Rakefile as below
+9. Comment out the rdoc/task line in the Rakefile as below
 
     ```
       require "chef-config/package_task"
@@ -125,13 +125,13 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       require_relative "tasks/rspec"
     ```
     
-11. Build the Chef Client ruby gem packages
+10. Build the Chef Client ruby gem packages
 
     ```
       bundle exec rake gem
     ```
 
-12. Install the gem you just built
+11. Install the gem you just built
 
     For RHEL 6.6 & SLES 11
     ```
@@ -142,7 +142,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```
       ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
     ``` 
-13. Chef client is now built and installed (verify with chef-client or knife)
+12. Chef client is now built and installed (verify with chef-client or knife)
 
 
 ## Testing Chef Client
