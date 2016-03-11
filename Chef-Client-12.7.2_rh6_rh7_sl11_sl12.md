@@ -45,30 +45,30 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     
 3. For RHEL 6.6 and SLES 11 you will need Ruby 2.2.4
    
-	3.1. Download the source code
-	```
-     		cd /<source_root>/
-		wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
-     		tar zxf ruby-2.2.4.tar.gz
-     		cd ruby-2.2.4
-	```
+   3.1. Download the source code
+   ```
+   cd /<source_root>/
+   wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.4.tar.gz
+   tar zxf ruby-2.2.4.tar.gz
+   cd ruby-2.2.4
+   ```
 	
   For SLES 11
-	```
-    	  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
-	```
+  ```
+  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
+  ```
 	  
   For RHEL 6.6
-	```
-    	  ./configure
-	```
+  ```
+  ./configure
+  ```
 
    3.2. Build the source code
-```
-    	  make
-    	  make test	  
-	  sudo make install
-```
+   ```
+   make
+   make test	  
+   sudo make install
+   ```
 	
 4. Move to the location you wish to store the Chef source in
 
