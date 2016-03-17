@@ -1,4 +1,4 @@
-MySQL can be built for Linux on z Systems running RHEL 7.1 and SLES 12 by following these instructions. Version 5.7.11 has been successfully built & tested this way.
+MySQL can be built for Linux on z Systems running RHEL 6/7.1 and SLES 12 by following these instructions. Version 5.7.11 has been successfully built & tested this way.
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git
 .
 
@@ -14,19 +14,29 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
    1. Use the following commands to obtain dependencies
 
+    For RHEL 6
+    ```shell
+    sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel
+    ```
+	
     For RHEL 7.1
     ```shell
     sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel perl-Data-Dumper
     ```
+	
     For SLES 12
     ```shell
     sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel wget tar
     ```
-	For SLES 11 (GCC needs to be installed. Follow the steps given below)
+	
+	For SLES 11 
     ```shell
     sudo zypper install -y git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget
     ```
-    Install latest version gcc using the instructions mentioned [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo).
+	
+   2. Dependency build - GCC 6.0.0 and cmake-3.3.0-rc2 (Only Required on SLES 11)
+    
+	Install latest version gcc using the instructions mentioned [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo).
    
    _**Note:** While installing the latest version of gcc, please perform following steps for downloading and modifying the source code. Follow all other instructions as per the recipe file._
    
@@ -40,7 +50,6 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ``` 
    c) Set following environment variable.
     ```shell
-    cd /<source_root>/
     export LD_LIBRARY_PATH=/opt/gccgo/lib64/:/usr/local/lib64/
     ```	
    d) To install cmake, use the commands below.
@@ -49,9 +58,9 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     wget --no-check-certificate http://www.cmake.org/files/v3.3/cmake-3.3.0-rc2.tar.gz
 	tar xzf cmake-3.3.0-rc2.tar.gz
 	cd cmake-3.3.0-rc2
-	./bootstrap --prefix=/opt
+	./bootstrap --prefix=/usr
 	gmake
-	sudo gmake install LD_LIBRARY_PATH=/opt/gccgo/lib64/
+	sudo gmake install -e LD_LIBRARY_PATH=/opt/gccgo/lib64/
     ```	
 	
 ###Product Build - MySQL.
@@ -73,20 +82,27 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
    3. Configure and Build the MySQL Software.
    
-      For RHEL 7
+      For RHEL 6/7.1
     ```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 
-	  For SLES 11/12
+	  For SLES 11
+	  ```shell
+	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
+	tar xzf boost_1_59_0.tar.gz
+    cmake -DCMAKE_C_COMPILER=/opt/gccgo/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gccgo/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
+    gmake
+    ```
+	  
+	  For SLES 12
 	  ```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
-	  
    4. _[Optional]_ Check the make
 
     The testing should take only a few seconds. All 21 tests should PASS.
@@ -95,10 +111,16 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ```
 
    5. Install the Software into the standard location.
+   
+    For RHEL 6/7.1 & SLES 12
     ```shell
     sudo gmake install
     ```
-
+    For SLES 11
+	```shell
+    sudo gmake install -e LD_LIBRARY_PATH=/opt/gccgo/lib64/
+    ```
+	
 ###_[Optional]_ Post installation Setup and Testing.
 
    This guideline demonstrates a basic free-standing MySQL database, with a script for shutdown/restart as a System Service.
@@ -114,17 +136,21 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
    1. Initialize MySQL Data Directory.  (The `--user=mysql`, to match the MySQL Daemon (mysqld) userid).
     ```shell
     cd /usr/local/mysql
-    bin/mysqld --initialize --user=mysql
+    sudo bin/mysqld --initialize --user=mysql
     ```
 
    1. _[Optional]_ Start/Stop the mysqld daemon.
     ```shell
     cd /<source_root>/
     sudo /usr/local/mysql/bin/mysqld_safe --user=mysql &
-    /usr/local/mysql/bin/mysqladmin version
-    sudo /usr/local/mysql/bin/mysqladmin -u root shutdown
+    /usr/local/mysql/bin/mysqladmin --version
+    sudo /usr/local/mysql/bin/mysqladmin -u root -p shutdown
     ```
-     _**Note:** Performing a version check while the daemon is running confirms MySQL is operational._
+     _**Note:** i). Performing a version check while the daemon is running confirms MySQL is operational._
+	 
+	 _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
+					For example: `/usr/local/mysql/bin/mysql -A -u root -p`. The system will prompt `Enter password:` expecting the root password (temporary password generated when mysqld is initialised) in response.
+					To reset the password, `SET PASSWORD for 'root'@'localhost' = PASSWORD('newPassword');`._
 
    1. To start and stop server as an init.d Service
 
