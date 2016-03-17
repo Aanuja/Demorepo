@@ -150,7 +150,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 	 
 	 _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
 					For example: `/usr/local/mysql/bin/mysql -A -u root -p`. The system will prompt `Enter password:` expecting the root password (temporary password generated when mysqld is initialised) in response.
-					To reset the password, `SET PASSWORD for 'root'@'localhost' = PASSWORD('newPassword');`._
+					To reset the password: `SET PASSWORD for 'root'@'localhost' = PASSWORD('newPassword');`._
 
    1. To start and stop server as an init.d Service
 
