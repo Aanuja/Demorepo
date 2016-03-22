@@ -135,29 +135,33 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
    1. Initialize MySQL Data Directory.  (The `--user=mysql`, to match the MySQL Daemon (mysqld) userid).
    
+	```shell
+    cd /usr/local/mysql
+    ```
+    
     For RHEL 6/7.1 & SLES 12
     ```shell
-    cd /usr/local/mysql
     sudo bin/mysqld --initialize --user=mysql
     ```
     For SLES 11
     ```shell
-    cd /usr/local/mysql
     sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ bin/mysqld --initialize --user=mysql
     ```
 
    1. _[Optional]_ Start/Stop the mysqld daemon.
      
-    For RHEL 6/7.1 & SLES 12
     ```shell
     cd /<source_root>/
+    ```
+    
+    For RHEL 6/7.1 & SLES 12
+    ```shell
     sudo /usr/local/mysql/bin/mysqld_safe --user=mysql &
     /usr/local/mysql/bin/mysqladmin --version
     sudo /usr/local/mysql/bin/mysqladmin -u root -p shutdown
     ```
     For SLES 11
     ```shell
-    cd /<source_root>/
     sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqld_safe --user=mysql &
     /usr/local/mysql/bin/mysqladmin --version
     sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqladmin -u root -p shutdown
@@ -172,9 +176,13 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
    1. To start and stop server as an init.d Service
 
     This can be manually tested with a Start/Stop, but a system restart is needed for a full test.
-    For RHEL 6/7.1 & SLES 12
+    
     ```shell
     cd /usr/local/mysql
+    ```
+    
+    For RHEL 6/7.1 & SLES 12
+    ```shell
     sudo  cp support-files/mysql.server /etc/init.d/mysql
     sudo /etc/init.d/mysql start
     /usr/local/mysql/bin/mysqlshow -p
@@ -182,7 +190,6 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ```
     For SLES 11
     ```shell
-    cd /usr/local/mysql
     sudo cp support-files/mysql.server /etc/init.d/mysql
     sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /etc/init.d/mysql start
     LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqlshow -p
