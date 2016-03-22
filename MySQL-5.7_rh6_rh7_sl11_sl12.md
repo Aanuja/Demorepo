@@ -134,34 +134,61 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ```
 
    1. Initialize MySQL Data Directory.  (The `--user=mysql`, to match the MySQL Daemon (mysqld) userid).
+   
+    For RHEL 6/7.1 & SLES 12
     ```shell
     cd /usr/local/mysql
     sudo bin/mysqld --initialize --user=mysql
     ```
+    For SLES 11
+    ```shell
+    cd /usr/local/mysql
+    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ bin/mysqld --initialize --user=mysql
+    ```
 
    1. _[Optional]_ Start/Stop the mysqld daemon.
+     
+    For RHEL 6/7.1 & SLES 12
     ```shell
     cd /<source_root>/
     sudo /usr/local/mysql/bin/mysqld_safe --user=mysql &
     /usr/local/mysql/bin/mysqladmin --version
     sudo /usr/local/mysql/bin/mysqladmin -u root -p shutdown
     ```
+    For SLES 11
+    ```shell
+    cd /<source_root>/
+    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqld_safe --user=mysql &
+    /usr/local/mysql/bin/mysqladmin --version
+    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqladmin -u root -p shutdown
+    ```
+    
      _**Note:** i). Performing a version check while the daemon is running confirms MySQL is operational._
 	 
-	 _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
+     _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
 					For example: `/usr/local/mysql/bin/mysql -A -u root -p`. The system will prompt `Enter password:` expecting the root password (temporary password generated when mysqld is initialised) in response.
 					To reset the password: `SET PASSWORD for 'root'@'localhost' = PASSWORD('newPassword');`._
 
    1. To start and stop server as an init.d Service
 
     This can be manually tested with a Start/Stop, but a system restart is needed for a full test.
+    For RHEL 6/7.1 & SLES 12
     ```shell
     cd /usr/local/mysql
     sudo  cp support-files/mysql.server /etc/init.d/mysql
     sudo /etc/init.d/mysql start
-    /usr/local/mysql/bin/mysqlshow
+    /usr/local/mysql/bin/mysqlshow -p
     sudo /etc/init.d/mysql stop
     ```
+    For SLES 11
+    ```shell
+    cd /usr/local/mysql
+    sudo cp support-files/mysql.server /etc/init.d/mysql
+    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /etc/init.d/mysql start
+    LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqlshow -p
+    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /etc/init.d/mysql stop
+    ```
+    
     _**Note:** i). Operation of bin/mysql commands requires, a running mysql server, and the `mysqlshow` executable is to show the existing databases._
 
     _**Note:** ii). See http://www.mysql.com for full details,  ... where a Linux root password is set, the bin/mysqladmin and bin/mysql commands require -u and -p options.
