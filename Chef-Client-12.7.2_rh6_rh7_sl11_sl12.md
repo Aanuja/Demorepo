@@ -18,7 +18,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 	
     For RHEL 6.6 
     ```
-    sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel 	  
+    sudo yum -y install git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel which	  
     ```
     
     For SLES 11
@@ -106,15 +106,8 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
    ```
    bundle install
    ```
-9. Comment out the rdoc/task line in the Rakefile as below
-
-   ```
-   require "chef-config/package_task"
-   #require "rdoc/task"
-   require_relative "tasks/rspec"
-   ```
     
-10. Build the Chef Client ruby gem packages
+9. Build the Chef Client ruby gem packages
 
    ```
    bundle exec rake gem
@@ -126,13 +119,13 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       export PATH=$PATH:$HOME/bin
     ```
 
-11. Install the gem you just built
+10. Install the gem you just built
 
    ```
    ls pkg/*.gem | grep -v mingw32 | xargs gem install
    ```    
    
-12. Chef client is now built and installed (verify with chef-client or knife)
+11. Chef client is now built and installed (verify with chef-client or knife)
 
 
 ## Testing Chef Client
@@ -145,37 +138,55 @@ If you'd like to test the Chef client you've just built and installed, just foll
    cd /<source_root>/chef/
    bundle exec rake spec
    ```  
-   To run a Single Test File
+   To run a single test file
    ```  
    bundle exec rspec spec/PATH/TO/FILE_spec.rb
    ```  
-   To Run a Subset of Tests
+   To run a subset of tests
    ```
    bundle exec rspec spec/PATH/TO/DIR
    ```
    
+   _**NOTE:**Note: This may fail as there can be a dependency on rdoc/task in the Rakefile, if that happens just comment out the rdoc/task line as below._
+
+   ```
+   require "chef-config/package_task"
+   require 'rdoc/task'
+   require_relative 'tasks/rspec'
+   ```
+   can be changed to be
+
+   ```
+   require "chef-config/package_task"
+   #require 'rdoc/task'
+   require_relative 'tasks/rspec'
+   ```
+
 2. Notes on Verification Test Failures (not specific to Linux on z Systems)  
-   1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, add following  
+   1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, modify the following file  
 
-     1. ``` vi ./spec/integration/client/client_spec.rb```  
-     2.  Modify the file as follows:  
-
-        * For SLES12: add HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
+   ``` vi ./spec/integration/client/client_spec.rb```  
+     
+	For SLES12 
+	the following line of code:  
+      ```
+      let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+      ```  
+      can be changed to 
+      ```
+      let(:critical_env_vars) { %w(PATH GEM_HOME HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+      ```
+     
+	For RHEL6, RHEL7 and SLES11
+	the following line of code:
         ```
-        let(:critical_env_vars) { %w(PATH GEM_HOME HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
-        ```  
-
-        * For RHEL6, RHEL7 and SLES11: add GEM_HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
+        let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+	```
+	can be changed to
         ```
         let(:critical_env_vars) { %w(PATH GEM_HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
 	```
-   2. If test case "Chef::Provider::Package::Rubygems::AlternateGemEnvironment determines the installed versions of gems from the source index (part2: the unmockening)" fails, install the following
 	
-		* For RHEL6:  
-        ```
-        sudo yum install -y which 
-        ```		
-		
 3. Visit https://github.com/chef/chef#testing for more   
 
 ## References:
