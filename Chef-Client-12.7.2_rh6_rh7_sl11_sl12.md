@@ -92,24 +92,13 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ``` 
 
     _where `<USER>` is the standard user you are installing under._
-
-   For SLES 12
-   ```
-   export PATH=$PATH:/<source_root>/chef/bin
-   ```
        
    _**Note**: Run ```gem env``` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
 	
 7. Install the required version of the bundler ruby gem
 
-   For RHEL 6.6 & SLES 11
    ```
    gem install bundler -v '1.7.3'
-   ```
-	
-   For RHEL 7.1 & SLES 12
-   ```
-   sudo gem install bundler -v '1.7.3'
    ```
 	
 8. Use bundler to install Chef Client's ruby gem dependencies
@@ -131,17 +120,18 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
    bundle exec rake gem
    ```
 
+   _**NOTE:** For RHEL7, if ```bundler: command not found: rake``` error occurs, set ```rake``` binary path to PATH environment variable and rerun above command._  
+
+    ```
+      export PATH=$PATH:$HOME/bin
+    ```
+
 11. Install the gem you just built
 
-    For RHEL 6.6 & SLES 11
    ```
    ls pkg/*.gem | grep -v mingw32 | xargs gem install
    ```    
-	
-    For RHEL 7.1 & SLES 12
-   ```
-   ls pkg/*.gem | grep -v mingw32 | xargs sudo gem install
-   ``` 
+   
 12. Chef client is now built and installed (verify with chef-client or knife)
 
 
@@ -172,7 +162,7 @@ If you'd like to test the Chef client you've just built and installed, just foll
 
         * For SLES12: add HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
         ```
-        let(:critical_env_vars) { %w(PATH HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
+        let(:critical_env_vars) { %w(PATH GEM_HOME HOME RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
         ```  
 
         * For RHEL6, RHEL7 and SLES11: add GEM_HOME variable in ```let(:critical_env_vars)``` and it should look like following:  
