@@ -163,17 +163,17 @@ If you'd like to test the Chef client you've just built and installed, just foll
    ```
 
 2. Notes on Verification Test Failures (not specific to Linux on z Systems)  
-   1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, edit the following file
+   1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, edit the file
 
    		``` vi ./spec/integration/client/client_spec.rb```  
         
         the following line of code
         
-        ``` let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }```
+        ```let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }```
         
-        can be changed to 
-        
-     	For RHEL6/7 & SLES11
+        can be changed to: 
+        	
+        For RHEL6/7 & SLES11
 		``` 
 		let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH GEM_HOME).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
 		```
