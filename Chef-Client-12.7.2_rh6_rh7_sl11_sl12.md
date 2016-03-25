@@ -167,7 +167,7 @@ If you'd like to test the Chef client you've just built and installed, just foll
 
    		``` vi ./spec/integration/client/client_spec.rb```  
      
-     		For RHEL6/7 & SLES11, The following line of code:
+     	For RHEL6/7 & SLES11, The following line of code:
 		
 		``` let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }```
 	
