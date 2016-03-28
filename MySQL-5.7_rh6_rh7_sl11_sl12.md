@@ -31,28 +31,31 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 	
 	For SLES 11 
     ```shell
-    sudo zypper install -y git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget
+    sudo zypper install -y git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar wget glibc-devel-32bit zlib-devel
     ```
 	
-   2. Dependency build - GCC 6.0.0 and cmake-3.3.0-rc2 (Only Required on SLES 11)
+   2. Dependency build - GCC 4.8.2 and cmake-3.3.0-rc2 (Only Required on SLES 11)
     
-	Install latest version gcc using the instructions mentioned [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo).
-   
-   _**Note:** While installing the latest version of gcc, please perform following steps for downloading and modifying the source code. Follow all other instructions as per the recipe file._
-   
-   a) Download svn revision **233207** instead of 223813 mentioned in the recipe. Use following command.
+   a) To install GCC, use the commands below.
     ```shell
-    svn co svn://gcc.gnu.org/svn/gcc/trunk@233207 gcc_srcDir
+    wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
+	bunzip2  gcc-4.8.2.tar.bz2
+	tar xvf gcc-4.8.2.tar
+	cd gcc-4.8.2/
+	./contrib/download_prerequisites
+	mkdir build
+	cd build
+	../configure --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
+	make 
+	sudo make install 
     ```   
-   b) After executing the './configure' run the below command
+   b) Set following environment variable.
     ```shell
-    sed --in-place '83s/,//' /<source_root>/gcc_srcDir/isl/include/isl/ctx.h
-    ``` 
-   c) Set following environment variable.
-    ```shell
-    export LD_LIBRARY_PATH=/opt/gccgo/lib64/:/usr/local/lib64/
+	export PATH=/opt/gcc4.8/bin:$PATH
+    export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```	
-   d) To install cmake, use the commands below.
+ 
+   c) To install cmake, use the commands below.
     ```shell
 	cd /<source_root>/
     wget --no-check-certificate http://www.cmake.org/files/v3.3/cmake-3.3.0-rc2.tar.gz
@@ -60,7 +63,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 	cd cmake-3.3.0-rc2
 	./bootstrap --prefix=/usr
 	gmake
-	sudo gmake install -e LD_LIBRARY_PATH=/opt/gccgo/lib64/
+	sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```	
 	
 ###Product Build - MySQL.
@@ -92,7 +95,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 	  ```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
-    cmake -DCMAKE_C_COMPILER=/opt/gccgo/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gccgo/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
+    cmake -DCMAKE_C_COMPILER=/opt/gcc4.8/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc4.8/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 	  
@@ -118,7 +121,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ```
     For SLES 11
 	```shell
-    sudo gmake install -e LD_LIBRARY_PATH=/opt/gccgo/lib64/
+    sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```
 	
 ###_[Optional]_ Post installation Setup and Testing.
@@ -134,68 +137,35 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     ```
 
    1. Initialize MySQL Data Directory.  (The `--user=mysql`, to match the MySQL Daemon (mysqld) userid).
-   
-	```shell
+    ```shell
     cd /usr/local/mysql
-    ```
-    
-    For RHEL 6/7.1 & SLES 12
-    ```shell
     sudo bin/mysqld --initialize --user=mysql
-    ```
-    For SLES 11
-    ```shell
-    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ bin/mysqld --initialize --user=mysql
     ```
 
    1. _[Optional]_ Start/Stop the mysqld daemon.
-     
     ```shell
     cd /<source_root>/
-    ```
-    
-    For RHEL 6/7.1 & SLES 12
-    ```shell
     sudo /usr/local/mysql/bin/mysqld_safe --user=mysql &
     /usr/local/mysql/bin/mysqladmin --version
     sudo /usr/local/mysql/bin/mysqladmin -u root -p shutdown
     ```
-    For SLES 11
-    ```shell
-    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqld_safe --user=mysql &
-    /usr/local/mysql/bin/mysqladmin --version
-    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqladmin -u root -p shutdown
-    ```
-    
      _**Note:** i). Performing a version check while the daemon is running confirms MySQL is operational._
 	 
-     _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
+	 _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
 					For example: `/usr/local/mysql/bin/mysql -A -u root -p`. The system will prompt `Enter password:` expecting the root password (temporary password generated when mysqld is initialised) in response.
 					To reset the password: `SET PASSWORD for 'root'@'localhost' = PASSWORD('newPassword');`._
 
    1. To start and stop server as an init.d Service
 
     This can be manually tested with a Start/Stop, but a system restart is needed for a full test.
-    
     ```shell
     cd /usr/local/mysql
-    ```
-    
-    For RHEL 6/7.1 & SLES 12
-    ```shell
-    sudo  cp support-files/mysql.server /etc/init.d/mysql
-    sudo /etc/init.d/mysql start
-    /usr/local/mysql/bin/mysqlshow -p
-    sudo /etc/init.d/mysql stop
-    ```
-    For SLES 11
-    ```shell
     sudo cp support-files/mysql.server /etc/init.d/mysql
-    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /etc/init.d/mysql start
-    LD_LIBRARY_PATH=/opt/gccgo/lib64/ /usr/local/mysql/bin/mysqlshow -p
-    sudo LD_LIBRARY_PATH=/opt/gccgo/lib64/ /etc/init.d/mysql stop
+	cd /etc/init.d
+    sudo ./mysql start
+    sudo /usr/local/mysql/bin/mysqlshow -p
+    sudo ./mysql stop
     ```
-    
     _**Note:** i). Operation of bin/mysql commands requires, a running mysql server, and the `mysqlshow` executable is to show the existing databases._
 
     _**Note:** ii). See http://www.mysql.com for full details,  ... where a Linux root password is set, the bin/mysqladmin and bin/mysql commands require -u and -p options.
