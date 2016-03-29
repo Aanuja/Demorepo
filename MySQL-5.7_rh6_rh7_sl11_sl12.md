@@ -40,7 +40,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
 ###Dependency Build -  GCC 4.8.2 and cmake 3.3.0-rc2
 
-   _**Only Required on SLES 11**  
+   _**Only Required on SLES 11**_  
    
    - Install GCC 4.8.2 by building from source.
    
