@@ -1,4 +1,4 @@
-MySQL can be built for Linux on z Systems running RHEL 6/7.1 and SLES 12 by following these instructions. Version 5.7.11 has been successfully built & tested this way.
+MySQL can be built for Linux on z Systems running RHEL 6.6/7.1 and SLES 11/12 by following these instructions.  Version 5.7.11 has been successfully built & tested this way.
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git
 .
 
@@ -10,62 +10,108 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
 ## Building MySQL
 
-###Obtain pre-built dependencies
+###Obtain pre-built dependencies and create `/<source_root>/` directory.
 
-   1. Use the following commands to obtain dependencies
+   1. Use the following commands to obtain dependencies :
 
-    For RHEL 6
+    For RHEL 6.6
     ```shell
     sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel
     ```
-	
     For RHEL 7.1
     ```shell
     sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel perl-Data-Dumper
     ```
-	
+
+	For SLES 11 - _(Additional support packages are needed to update cmake)_
+    ```shell
+    sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget glibc-devel-32bit zlib-devel
+    ```
     For SLES 12
     ```shell
     sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel wget tar
     ```
-	
-	For SLES 11 
+
+   1. Create the `/<source_root>/` directory mentioned above.
+
     ```shell
-    sudo zypper install -y git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar wget glibc-devel-32bit zlib-devel
+    mkdir /<source_root>/
     ```
-	
-   2. Dependency build - GCC 4.8.2 and cmake-3.3.0-rc2 (Only Required on SLES 11)
-    
-   a) To install GCC, use the commands below.
+
+###Dependency Build -  GCC 4.8.2 and cmake 3.3.0-rc2
+
+   _**Only Required on SLES 11**  
+   
+   - Install GCC 4.8.2 by building from source._
+   
+   1. Download the GCC source code, then extract it.
+      ```shell
+      cd /<source_root>/
+      wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
+	  bunzip2  gcc-4.8.2.tar.bz2
+	  tar xvf gcc-4.8.2.tar
+      ```
+
+   2. Download the prerequisites needed for GCC.
+      ```shell
+      cd gcc-4.8.2/
+	  ./contrib/download_prerequisites
+	  mkdir build
+	  cd build
+      ```
+	  
+   3. Configure the Makefile. Then Make and Install the utility.
+      ```shell
+      ../configure --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
+	  make 
+	  sudo make install 
+      ```
+
+   4. Set the environment variable.
+      ```shell
+      export PATH=/opt/gcc4.8/bin:$PATH
+      export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
+      ```
+   
+   5. Confirm the version of `GCC`.
+      ```shell
+      gcc --version
+      ```
+	  
+	  
+   - Update cmake to version 3.3.0-rc2 by building from source._
+
+   1. _[Optional]_ Check the version of any existing `cmake` executable.
     ```shell
-    wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
-	bunzip2  gcc-4.8.2.tar.bz2
-	tar xvf gcc-4.8.2.tar
-	cd gcc-4.8.2/
-	./contrib/download_prerequisites
-	mkdir build
-	cd build
-	../configure --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
-	make 
-	sudo make install 
-    ```   
-   b) Set following environment variable.
-    ```shell
-	export PATH=/opt/gcc4.8/bin:$PATH
-    export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
-    ```	
- 
-   c) To install cmake, use the commands below.
-    ```shell
-	cd /<source_root>/
-    wget --no-check-certificate http://www.cmake.org/files/v3.3/cmake-3.3.0-rc2.tar.gz
-	tar xzf cmake-3.3.0-rc2.tar.gz
-	cd cmake-3.3.0-rc2
-	./bootstrap --prefix=/usr
-	gmake
-	sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
-    ```	
-	
+      which cmake
+      $(which cmake) --version
+    ```
+      _**Note:** A `cmake` at version 2.6.3 or later should be usable without upgrade._
+
+
+   1. Download the cmake source code, then extract it.
+      ```shell
+      cd /<source_root>/
+      wget http://www.cmake.org/files/v3.3/cmake-3.3.0-rc2.tar.gz
+      tar xzf cmake-3.3.0-rc2.tar.gz
+      ```
+
+   1. Bootstrap to configure the Makefile. Then Make and Install the utility.
+      ```shell
+      cd cmake-3.3.0-rc2
+      ./bootstrap --prefix=/usr
+      gmake
+      sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
+      ```
+      _**Note:** To place `cmake` in the standard SLES location use `./bootstrap --prefix=/usr`._
+
+
+   1. Confirm the location and version of the upgraded `cmake`.
+      ```shell
+      which cmake
+      $(which cmake) --version
+      ```
+
 ###Product Build - MySQL.
 
    1. Download the MySQL 5.7.11 source code from Github.
@@ -74,7 +120,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     git clone https://github.com/mysql/mysql-server.git
     ```
 
-   2. Move into the ` mysql-server` sub-directory, and checkout branch 5.7
+   1. Move into the ` mysql-server` sub-directory, and checkout branch 5.6
     ```shell
     cd mysql-server
     git branch
@@ -83,47 +129,49 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     _**Note:** At the time of writing branch 5.7 returned minor version 5.7.11, - this minor version is subject to change._
 
 
-   3. Configure and Build the MySQL Software.
+   1. Configure and Build the MySQL Software.
    
-      For RHEL 6/7.1
+    For RHEL 6.6/7.1
     ```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 
-	  For SLES 11
-	  ```shell
+	For SLES 11
+	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
     cmake -DCMAKE_C_COMPILER=/opt/gcc4.8/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc4.8/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 	  
-	  For SLES 12
-	  ```shell
+	For SLES 12
+	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
-   4. _[Optional]_ Check the make
+
+   1. _[Optional]_ Check the make
 
     The testing should take only a few seconds. All 21 tests should PASS.
     ```shell
     gmake test
     ```
 
-   5. Install the Software into the standard location.
-   
-    For RHEL 6/7.1 & SLES 12
+   1. Install the Software into the standard location.
+    
+	For RHEL 6.6/7.1 & SLES 12
     ```shell
     sudo gmake install
     ```
-    For SLES 11
+    
+	For SLES 11
 	```shell
     sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```
-	
+
 ###_[Optional]_ Post installation Setup and Testing.
 
    This guideline demonstrates a basic free-standing MySQL database, with a script for shutdown/restart as a System Service.
@@ -149,7 +197,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
     /usr/local/mysql/bin/mysqladmin --version
     sudo /usr/local/mysql/bin/mysqladmin -u root -p shutdown
     ```
-     _**Note:** i). Performing a version check while the daemon is running confirms MySQL is operational._
+     _**Note:** Performing a version check while the daemon is running confirms MySQL is operational._
 	 
 	 _**Note:** ii). After starting the mysqld server, reset the root password using the mysql shell:
 					For example: `/usr/local/mysql/bin/mysql -A -u root -p`. The system will prompt `Enter password:` expecting the root password (temporary password generated when mysqld is initialised) in response.
