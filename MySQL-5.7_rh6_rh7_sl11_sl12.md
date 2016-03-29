@@ -40,9 +40,9 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
 ###Dependency Build -  GCC 4.8.2 and cmake 3.3.0-rc2
 
-   _**Only Required on SLES 11**  
+   _**Only Required on SLES 11**_  
    
-   - Install GCC 4.8.2 by building from source._
+   - Install GCC 4.8.2 by building from source.
    
    1. Download the GCC source code, then extract it.
       ```shell
@@ -79,7 +79,7 @@ ii) _**Note:** A directory `/<source_root>/` will be referred to in these instru
       ```
 	  
 	  
-   - Update cmake to version 3.3.0-rc2 by building from source._
+   - Update cmake to version 3.3.0-rc2 by building from source.
 
    1. _[Optional]_ Check the version of any existing `cmake` executable.
     ```shell
