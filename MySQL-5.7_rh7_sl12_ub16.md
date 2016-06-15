@@ -4,7 +4,7 @@ Below versions of MySQL are available in respective distributions at the time of
 
 *    Ubuntu 16.04 has `5.7.12-0ubuntu1`
 
-The instructions provided below specify the steps to build MySQL version 5.7 on Linux on the IBM z Systems for RHEL 7.1 and SLES12.
+The instructions provided below specify the steps to build MySQL version 5.7 on Linux on the IBM z Systems for RHEL 7.1, SLES12 and UBUNTU 16.04.
 
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git.
 
