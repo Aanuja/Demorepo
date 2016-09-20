@@ -42,8 +42,8 @@ See instructions [here](https://github.com/openshift/origin/blob/master/CONTRIBU
      cd $GOPATH/src/github.com/openshift
      git clone https://github.com/openshift/origin.git
      cd origin
-     git checkout tags/v1.2.1 -b v1.2.1
-     cp $GOPATH/src/github.com/openshift/origin/Godeps/_workspace/src/github.com/boltdb/bolt/bolt_amd64.go $GOPATH/src/github.com/openshift/origin/Godeps/_workspace/src/github.com/boltdb/bolt/bolt_s390x.go
+     git checkout tags/v1.3.0 -b v1.3.0
+     ##cp $GOPATH/src/github.com/openshift/origin/Godeps/_workspace/src/github.com/boltdb/bolt/bolt_amd64.go $GOPATH/src/github.com/openshift/origin/Godeps/_workspace/src/github.com/boltdb/bolt/bolt_s390x.go
      make clean build
 
 Above steps will generate OpenShift Origin executable in the directory specified in the instructions.  You are now ready to use OpenShift Origin.
