@@ -275,74 +275,58 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
         __Note:__ We copy the compiled go directory to the image directly. 
 
         ```diff
-          @@ -12,16 +12,12 @@ ENV VERSION=1.6 \
+          @@ -12,17 +12,19 @@ ENV VERSION=1.6 \
                GOROOT=/usr/local/go \
                OS_VERSION_FILE=/go/src/github.com/openshift/origin/os-version-defs \
                TMPDIR=/openshifttmp
         -ENV PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-        -RUN mkdir $TMPDIR && \
-        -    INSTALL_PKGS="gcc zip mercurial" && \
-        -    yum install -y $INSTALL_PKGS && \
+             RUN mkdir $TMPDIR && \
+        -    INSTALL_PKGS="make gcc zip mercurial krb5-devel bsdtar" && \
+        +    INSTALL_PKGS="make gcc-c++ glibc-devel curl gcc zip mercurial krb5-devel bsdtar" && \
+        	 yum install -y $INSTALL_PKGS && \
         -    rpm -V $INSTALL_PKGS && \
-        -    yum clean all && \
-        -    curl https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz | tar -C /usr/local -xzf - && \
-        -    go get golang.org/x/tools/cmd/cover github.com/tools/godep github.com/golang/lint/golint && \
-        -    touch /os-build-image
-        +RUN yum install --nogpgcheck -y gcc-c++ gcc glibc-devel make curl zip hg && yum clean all
+        +  #  rpm -V $INSTALL_PKGS && \
+     	  	 yum clean all && \
+     	-    curl https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz | tar -C /usr/local -xzf - && \
+     	-    go get golang.org/x/tools/cmd/cover github.com/tools/godep github.com/golang/lint/golint && \
+     		touch /os-build-image
         +
         +ADD go/ /usr/local/go/
         +ENV GOROOT /usr/local/go
         +ENV PATH $PATH:/usr/local/go/bin/
-                WORKDIR /go/src/github.com/openshift/origin
+        +
+        	# Allows building Origin sources mounted using volume
+        	COPY openshift-origin-build.sh /usr/bin/openshift-origin-build.sh
         ```
     * `images/router/haproxy-base/Dockerfile`, add scripts for haproxy installation on s390x.
        
         ```diff
-         @@ -11,12 +11,28 @@ FROM openshift/origin-base
-                #       this is temporary and should be removed when the container is switch to an empty-dir
-                #       with gid support.
-                #
+         @@ -11,9 +11,13 @@ FROM openshift/origin-base
+         	#       this is temporary and should be removed when the container is switch to an empty-dir
+         	#       with gid support.
+         	#
         -RUN INSTALL_PKGS="haproxy iptables lsof" && \
-        -    yum install -y $INSTALL_PKGS && \
-        -    rpm -V $INSTALL_PKGS && \
-        +RUN yum install --nogpgcheck -y \
-        +        git \
-        +        java-1.8.0-openjdk \
-        +        gcc-c++ \
-        +        tar \
-        +        openssl \
-        +        openssl-devel \
-        +        pcre \
-        +        pcre-devel \
-        +        make
-        +RUN yum clean all
-        +
-        +# Clone the source code of HAProxy from github
-        +RUN git clone http://git.haproxy.org/git/haproxy-1.6.git
-        +
-        +# Build and install Node.js
-        +RUN cd haproxy-1.6/ && make TARGET=linux26 USE_OPENSSL=1 && make install
-        +
-        +RUN \
-                mkdir -p /var/lib/containers/router/{certs,cacerts} && \
-                mkdir -p /var/lib/haproxy/{conf,run,bin,log} && \
-        -    touch /var/lib/haproxy/conf/{{os_http_be,os_edge_http_be,os_tcp_be,os_sni_passthrough,os_reencrypt,os_edge_http_expose,os_edge_http_redirect}.map,haproxy.config} && \
-        +# touch /var/lib/haproxy/conf/{{os_http_be,os_edge_http_be,os_tcp_be,os_sni_passthrough,os_reencrypt,os_edge_http_expose,os_edge_http_redirect}.map,haproxy.config} && \
-                chmod -R 777 /var && \
-                yum clean all
+        +RUN INSTALL_PKGS="git java-1.8.0-openjdk gcc-c++ tar openssl openssl-devel pcre pcre-devel make iptables lsof" && \
+        	yum install -y $INSTALL_PKGS && \
+        	rpm -V $INSTALL_PKGS && \
+        +    git clone http://git.haproxy.org/git/haproxy-1.6.git && \
+        +    cd haproxy-1.6/ && \
+        +    make TARGET=linux26 USE_OPENSSL=1 && \
+        +    make install && \
+        	mkdir -p /var/lib/containers/router/{certs,cacerts} && \
+     		mkdir -p /var/lib/haproxy/{conf,run,bin,log} && \
+     		touch /var/lib/haproxy/conf/{{os_http_be,os_edge_http_be,os_tcp_be,os_sni_passthrough,os_reencrypt,os_edge_http_expose,os_edge_http_redirect}.map,haproxy.config} && \
         ```
     * `images/router/haproxy/Dockerfile`.
         
         ```diff
-         @@ -17,7 +17,7 @@ ADD bin/openshift /usr/bin/openshift
-                #
-                RUN ln -s /usr/bin/openshift /usr/bin/openshift-router && \
-                chmod -R 777 /var && \
-        -    setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
-        +    setcap 'cap_net_bind_service=ep' /usr/local/sbin/haproxy
-                WORKDIR /var/lib/haproxy/conf
- 
-                EXPOSE 80
+         mkdir -p /var/lib/haproxy/{conf,run,bin,log} && \
+     touch /var/lib/haproxy/conf/{{os_http_be,os_edge_http_be,os_tcp_be,os_sni_passthrough,os_reencrypt,os_edge_http_expose,os_edge_http_redirect}.map,haproxy.config} && \
+     chmod -R 777 /var && \
+     -    setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
+     +    setcap 'cap_net_bind_service=ep' /usr/local/sbin/haproxy
+     	
+     		COPY . /var/lib/haproxy/
         ```
 
 3. Copy your pre-built go folder in to `$GOPATH/src/github.com/openshift/origin/images/release`.
