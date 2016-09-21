@@ -146,44 +146,27 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
         	 else
            		echo "++ ERROR: No release type defined for $platform"
         ```
-    * `hack/extract-release.sh`, add s390x support.
-        ```diff
-        @@ -17,9 +17,9 @@ cd "${OS_ROOT}"
-               # TODO: support different OS's?
-               os::build::detect_local_release_tars $(os::build::host_platform_friendly)
- 
-        -mkdir -p "${OS_OUTPUT_BINPATH}/linux/amd64"
-        -os::build::extract_tar "${OS_PRIMARY_RELEASE_TAR}" "${OS_OUTPUT_BINPATH}/linux/amd64"
-        -os::build::extract_tar "${OS_CLIENT_RELEASE_TAR}" "${OS_OUTPUT_BINPATH}/linux/amd64"
-        -os::build::extract_tar "${OS_IMAGE_RELEASE_TAR}" "${OS_OUTPUT_BINPATH}/linux/amd64"
-        +mkdir -p "${OS_OUTPUT_BINPATH}/linux/s390x"
-        +tar mxzf "${OS_PRIMARY_RELEASE_TAR}" --strip-components=1 -C "${OS_OUTPUT_BINPATH}/linux/s390x"
-        +tar mxzf "${OS_CLIENT_RELEASE_TAR}" --strip-components=1 -C "${OS_OUTPUT_BINPATH}/linux/s390x"
-        +tar mxzf "${OS_IMAGE_RELEASE_TAR}" --strip-components=1 -C "${OS_OUTPUT_BINPATH}/linux/s390x"
- 
-              os::build::make_openshift_binary_symlinks
-        ```
     * `images/router/haproxy/reload-haproxy`, switch to `/usr/local/sbin/haproxy` for the customized haproxy installation.
         ```diff
         @@ -81,7 +81,8 @@ if [ -n "$old_pids" ]; then
-              fi
-             fi
- 
-        -  /usr/sbin/haproxy -f $config_file -p $pid_file -sf $old_pids
-        +#  /usr/sbin/haproxy -f $config_file -p $pid_file -sf $old_pids
-        +   /usr/local/sbin/haproxy -f $config_file -p $pid_file -sf $old_pid
-             reload_status=$?
- 
-             if [[ "$installed_iptables" == 1 ]]; then
-        @@ -108,7 +109,8 @@ if [ -n "$old_pids" ]; then
-                 fi
-             fi
-             else
-        -  /usr/sbin/haproxy -f $config_file -p $pid_file
-        +#  /usr/sbin/haproxy -f $config_file -p $pid_file
-        +   /usr/local/sbin/haproxy -f $config_file -p $pid_file
-             reload_status=$?
-             fi
+     		fi
+   		fi
+
+	-  /usr/sbin/haproxy -f $config_file -p $pid_file -sf $old_pids
+	+#  /usr/sbin/haproxy -f $config_file -p $pid_file -sf $old_pids
+	+    /usr/local/sbin/haproxy -f $config_file -p $pid_file -sf $old_pid
+   		reload_status=$?
+
+   		if [[ "$installed_iptables" == 1 ]]; then
+	@@ -108,7 +109,8 @@ if [ -n "$old_pids" ]; then
+		 fi
+   		fi
+ 		else
+	-  /usr/sbin/haproxy -f $config_file -p $pid_file
+	+#  /usr/sbin/haproxy -f $config_file -p $pid_file
+	+   /usr/local/sbin/haproxy -f $config_file -p $pid_file
+   		reload_status=$?
+ 		fi
         ```
     * `images/router/haproxy/conf/haproxy-config.template`.
         ```diff
