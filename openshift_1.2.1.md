@@ -205,76 +205,70 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
         ```
     * `images/builder/docker/custom-docker-builder/Dockerfile`, add scripts for docker installation on s390x.
         ```diff
-        @@ -16,10 +16,13 @@
-              #
-              FROM openshift/origin-base
+        @@ -16,11 +16,16 @@
+ 		#
+ 		FROM openshift/origin-base
  
-        -RUN INSTALL_PKGS="gettext automake make docker" && \
-        -    yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
-        -    rpm -V $INSTALL_PKGS && \
-        -    yum clean all
-        +RUN yum install -y gettext automake make
-        +
-        +# Install docker
-        +RUN mkdir /docker && cd /docker
-        +RUN wget ftp://ftp.unicamp.br/pub/linuxpatch/s390x/redhat/rhel7.1/docker/docker-1.9.1-rhel7.1-20151205.tar.gz
-        +RUN tar -xvzf docker-1.9.1-rhel7.1-20151205.tar.gz && cp docker-1.9.1-rhel7.1-20151205/docker /usr/bin
-        +
-             ENV HOME /root
-             ADD ./build.sh /tmp/build.sh
-             CMD ["/tmp/build.sh"]
+	-RUN INSTALL_PKGS="gettext automake make docker" && \
+	+RUN INSTALL_PKGS="gettext automake make" && \
+     		yum install -y $INSTALL_PKGS && \
+     		rpm -V $INSTALL_PKGS && \
+     		yum clean all
+ 
+	+# Install docker
+	+RUN mkdir /docker && cd /docker
+	+RUN wget ftp://ftp.unicamp.br/pub/linuxpatch/s390x/redhat/rhel7.1/docker/docker-1.9.1-rhel7.1-20151205.tar.gz
+	+RUN tar -xvzf docker-1.9.1-rhel7.1-20151205.tar.gz && cp docker-1.9.1-rhel7.1-20151205/docker /usr/bin
+	+
+ 		LABEL io.k8s.display-name="OpenShift Origin Custom Builder Example" \
+       			io.k8s.description="This is an example of a custom builder for use with OpenShift Origin."
+ 		ENV HOME=/root
         ```
     * `images/node/Dockerfile`, add scripts for openvswitch installation on s390x.
         ```diff
-        @@ -13,8 +13,15 @@ MAINTAINER Devan Goodwin <dgoodwin@redhat.com>
-             # We need to install openvswitch for the client portions, the daemons are expected
-             # to run in another container
+        @@ -15,8 +15,15 @@ COPY conf/openshift-sdn-ovs.conf /usr/lib/systemd/system/origin-node.service.d/
+ 		COPY lib/systemd/system/docker.service.d/docker-sdn-ovs.conf /usr/lib/systemd/system/docker.service.d/docker-sdn-ovs.conf
+		 COPY scripts/* /usr/local/bin/
  
-        -ADD https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo /etc/yum.repos.d/
-        -RUN INSTALL_PKGS="libmnl libnetfilter_conntrack openvswitch \
-        +RUN yum install -y wget tar make gcc openssl python perl && yum clean all
-        + 
-        +# Install openvswitch from the source
-        +RUN mkdir openvswitch && cd ./openvswitch
-        +RUN wget http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
-        +RUN tar -xvf openvswitch-2.4.0.tar.gz
-        +RUN cd openvswitch-2.4.0/ && ./configure && make && make install
-        + 
-        +RUN yum install -y libmnl libnetfilter_conntrack \
-              libnfnetlink iptables iproute bridge-utils procps-ng ethtool socat openssl \
-              binutils xz kmod-libs kmod sysvinit-tools device-mapper-libs dbus \
-              ceph-common iscsi-initiator-utils" && \
+	-RUN curl -L -o /etc/yum.repos.d/origin-next-epel-7.repo https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo && \
+	-    INSTALL_PKGS="libmnl libnetfilter_conntrack openvswitch \
+	+RUN yum install -y wget tar make gcc openssl python perl && yum clean all
+	+
+	+# Install openvswitch from the source
+	+RUN mkdir openvswitch && cd ./openvswitch
+	+RUN wget http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
+	+RUN tar -xvf openvswitch-2.4.0.tar.gz
+	+RUN cd openvswitch-2.4.0/ && ./configure && make && make install
+	+
+	+RUN INSTALL_PKGS="libmnl libnetfilter_conntrack \
+       		libnfnetlink iptables iproute bridge-utils procps-ng ethtool socat openssl \
+       		binutils xz kmod-libs kmod sysvinit-tools device-mapper-libs dbus \
+		 ceph-common iscsi-initiator-utils" && \
         ```
     * `images/openvswitch/Dockerfile`, add scripts for openvswitch installation on s390x.
         ```diff
-        @@ -4,20 +4,15 @@
-              # The standard name for this image is openshift/openvswitch
-              #
+        @@ -7,12 +7,15 @@ FROM openshift/origin-base
  
-        -FROM centos:centos7
-        +FROM ecos0003:5000/rhel:7.2
+ 		COPY scripts/* /usr/local/bin/
  
-        -MAINTAINER Scott Dodson <sdodson@redhat.com>
-        +RUN yum install -y wget tar make gcc openssl python perl && yum clean all
+	-RUN curl -L -o /etc/yum.repos.d/origin-next-epel-7.repo https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo && \
+	-    INSTALL_PKGS="openvswitch" && \
+	-    yum install -y $INSTALL_PKGS && \
+	-    rpm -V $INSTALL_PKGS && \
+	-    yum clean all && \
+	-    chmod +x /usr/local/bin/*
+	+RUN yum install -y wget tar make gcc openssl python perl && yum clean all
+	+
+	+# Install openvswitch from the source
+	+RUN mkdir openvswitch && cd ./openvswitch
+	+RUN wget http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
+	+RUN tar -xvf openvswitch-2.4.0.tar.gz
+	+RUN cd openvswitch-2.4.0/ && ./configure && make && make install
+	+
+	+RUN chmod +x /usr/local/bin/*
  
-        -ADD https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo /etc/yum.repos.d/
-        -
-        -# TODO: systemd update from centos 7.1 -> 7.2 is broken, remove this once 7.2
-        -# base images land
-        -RUN yum swap -y -- remove systemd-container\* -- install systemd systemd-libs
-        -
-        -RUN INSTALL_PKGS="openvswitch" && \
-        -    yum install -y $INSTALL_PKGS && \
-        -    rpm -V $INSTALL_PKGS && \
-        -    yum clean all
-        +# Install openvswitch from the source
-        +RUN mkdir openvswitch && cd ./openvswitch
-        +RUN wget http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
-        +RUN tar -xvf openvswitch-2.4.0.tar.gz
-        +RUN cd openvswitch-2.4.0/ && ./configure && make && make install
- 
-              ADD  scripts/* /usr/local/bin/
-              RUN chmod +x /usr/local/bin/*
+ 		LABEL io.k8s.display-name="OpenShift Origin OpenVSwitch Daemon" \
+		 io.k8s.description="This is a component of OpenShift Origin and runs an OpenVSwitch daemon process."
         ```
     * `images/release/Dockerfile`, add scripts for go installation on s390x. 
         
