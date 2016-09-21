@@ -188,25 +188,20 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
   2. The docker files need to be changed: 
     * `images/base/Dockerfile`, all images should be based on our rhel7 base, so package installation should follow the rhel flavor, e.g., `yum install`.
         ```diff
-        @@ -4,16 +4,7 @@
-             #
-             # The standard name for this image is openshift/origin-base
-             #
-        -FROM centos:centos7
-        +FROM ecos0003:5000/rhel:7.2
+        @@ -4,10 +4,10 @@
+	 	#
+ 		# The standard name for this image is openshift/origin-base
+ 		#
+	-FROM centos:centos7
+	+FROM ecos0003:5000/rhel:7.2
  
-        -# components from EPEL must be installed in a separate yum install step
-        -
-        -# TODO: systemd update from centos 7.1 -> 7.2 is broken, remove this once 7.2
-        -# base images land
-        -RUN yum swap -y -- remove systemd-container\* -- install systemd systemd-libs
-        -
-        -RUN INSTALL_PKGS="which git tar wget hostname sysvinit-tools util-linux bsdtar epel-release \
-        -        socat ethtool device-mapper iptables e2fsprogs xfsprogs" && \
-        -    yum install -y $INSTALL_PKGS && \
-        -    rpm -V $INSTALL_PKGS && \
-        +RUN yum install -y which git tar wget socat hostname sysvinit-tools util-linux ethtool bsdtar && \
-             yum clean all
+	-RUN INSTALL_PKGS="which git tar wget hostname sysvinit-tools util-linux bsdtar epel-release \
+	-      socat ethtool device-mapper iptables tree findutils nmap-ncat e2fsprogs xfsprogs lsof" && \
+	+RUN INSTALL_PKGS="which git tar wget hostname sysvinit-tools util-linux bsdtar \
+	+      socat ethtool tree findutils nmap-ncat e2fsprogs xfsprogs lsof" && \
+     		yum install -y $INSTALL_PKGS && \
+     		rpm -V $INSTALL_PKGS && \
+     		yum clean all && \
         ```
     * `images/builder/docker/custom-docker-builder/Dockerfile`, add scripts for docker installation on s390x.
         ```diff
