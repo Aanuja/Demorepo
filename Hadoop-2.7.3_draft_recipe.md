@@ -162,11 +162,11 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
  #define ARCH_CPU_ARM_FAMILY 1
 +#elif defined(__s390x__) || defined(__s390__)
 +#define ARCH_CPU_S390_FAMILY 1
+ #elif defined(__ppc__) || defined(__powerpc__) || defined(__powerpc64__)
+ #define ARCH_CPU_PPC_FAMILY 1
  #endif
-
- namespace leveldb {
-@@ -83,6 +85,14 @@
- }
+@@ -50,6 +52,14 @@ namespace port {
+ // http://msdn.microsoft.com/en-us/library/ms684208(v=vs.85).aspx
  #define LEVELDB_HAVE_MEMORY_BARRIER
 
 +// S390
@@ -177,13 +177,13 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 +}
 +#define LEVELDB_HAVE_MEMORY_BARRIER
 +
- #endif
-
- // AtomicPointer built using platform-specific MemoryBarrier()
-@@ -137,6 +147,7 @@
- #undef LEVELDB_HAVE_MEMORY_BARRIER
+ // Gcc on x86
+ #elif defined(ARCH_CPU_X86_FAMILY) && defined(__GNUC__)
+ inline void MemoryBarrier() {
+@@ -217,6 +227,7 @@ class AtomicPointer {
  #undef ARCH_CPU_X86_FAMILY
  #undef ARCH_CPU_ARM_FAMILY
+ #undef ARCH_CPU_PPC_FAMILY
 +#undef ARCH_CPU_S390_FAMILY
 
  }  // namespace port
@@ -203,19 +203,21 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
    Edit file `${LEVELDBJNI_HOME}/leveldbjni-all/pom.xml`
 
 ```diff
-@@ -84,6 +84,12 @@
+@@ -84,7 +84,13 @@
        <version>1.8</version>
        <scope>provided</scope>
      </dependency>
-+    <dependency>
+-
++   <dependency>
 +      <groupId>org.fusesource.leveldbjni</groupId>
 +      <artifactId>leveldbjni-linux64-s390x</artifactId>
 +      <version>1.8</version>
 +      <scope>provided</scope>
 +    </dependency>
-
++
    </dependencies>
 
+   <build>
 @@ -119,7 +125,8 @@
                META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86,
                META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86-64,
@@ -242,15 +244,19 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 
 *  Modify the below file as per the diff contents
    
-   Edit file `../pom.xml`
+   Edit file `${LEVELDBJNI_HOME}/pom.xml`
 
 ```diff
-<module>leveldbjni-all</module>
-+       <module>leveldbjni-linux64-s390x</module>
+@@ -249,6 +249,7 @@
+         <module>leveldbjni-win32</module>
+         <module>leveldbjni-win64</module>
+         <module>leveldbjni-all</module>
++        <module>leveldbjni-linux64-s390x</module>
        </modules>
+     </profile>
 
-
-<module>leveldbjni-win64</module>
+@@ -298,6 +299,13 @@
+         <module>leveldbjni-win64</module>
        </modules>
      </profile>
 +
@@ -262,6 +268,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 +    </profile>
 
    </profiles>
+ </project>
 ```
 
  * Build the jar file and place it in destination folder
