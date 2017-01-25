@@ -190,12 +190,14 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
  }  // namespace leveldb
 ``` 
 
-  * Configure LevelDB & check out LevelDB JNI 1.8
+  * Configure LevelDB and LevelDB JNI 1.8
 
     ```
     make libleveldb.a
     cd ${LEVELDBJNI_HOME}
     git checkout leveldbjni-1.8
+    mkdir leveldbjni-linux64-s390x
+    cd leveldbjni-linux64-s390x
     ```
 
 * Modify the below file as per the diff contents
@@ -229,13 +231,6 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
           </instructions>
          </configuration>
 ```
-
-  * Create the LevelDB JNI directory
-
-    ```
-    mkdir leveldbjni-linux64-s390x
-    cd leveldbjni-linux64-s390x
-    ```
 
   * Create the new pom.xml for the above . verify if s390x entries present in the below listed files.
 
