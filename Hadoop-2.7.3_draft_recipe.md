@@ -156,13 +156,18 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
    Edit file `${LEVELDB_HOME}/port/atomic_pointer.h`
 
 ```diff
-#define ARCH_CPU_ARM_FAMILY 1
-+    #elif defined(__s390x__) || defined(__s390__)
-+    #define ARCH_CPU_S390_FAMILY 1
+@@ -36,6 +36,8 @@
+ #define ARCH_CPU_X86_FAMILY 1
+ #elif defined(__ARMEL__)
+ #define ARCH_CPU_ARM_FAMILY 1
++#elif defined(__s390x__) || defined(__s390__)
++#define ARCH_CPU_S390_FAMILY 1
  #endif
- 
- 
-#define LEVELDB_HAVE_MEMORY_BARRIER
+
+ namespace leveldb {
+@@ -83,6 +85,14 @@
+ }
+ #define LEVELDB_HAVE_MEMORY_BARRIER
 
 +// S390
 +#elif defined(ARCH_CPU_S390_FAMILY)
@@ -173,36 +178,35 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 +#define LEVELDB_HAVE_MEMORY_BARRIER
 +
  #endif
- 
 
-#undef LEVELDB_HAVE_MEMORY_BARRIER
-#undef ARCH_CPU_X86_FAMILY
-#undef ARCH_CPU_ARM_FAMILY
+ // AtomicPointer built using platform-specific MemoryBarrier()
+@@ -137,6 +147,7 @@
+ #undef LEVELDB_HAVE_MEMORY_BARRIER
+ #undef ARCH_CPU_X86_FAMILY
+ #undef ARCH_CPU_ARM_FAMILY
 +#undef ARCH_CPU_S390_FAMILY
 
-}  // namespace port
-}  // namespace leveldb
+ }  // namespace port
+ }  // namespace leveldb
 ``` 
 
-  * Configure LevelDB
+  * Configure LevelDB & check out LevelDB JNI 1.8
 
     ```
     make libleveldb.a
+    cd ${LEVELDBJNI_HOME}
+    git checkout leveldbjni-1.8
     ```
-
-* Check out LevelDB JNI 1.8
-
-   ```
-   cd ${LEVELDBJNI_HOME}
-   git checkout leveldbjni-1.8
-   ```
 
 * Modify the below file as per the diff contents
 
-   Edit file `leveldbjni-all/pom.xml`
+   Edit file `${LEVELDBJNI_HOME}/leveldbjni-all/pom.xml`
 
 ```diff
-</dependency>
+@@ -84,6 +84,12 @@
+       <version>1.8</version>
+       <scope>provided</scope>
+     </dependency>
 +    <dependency>
 +      <groupId>org.fusesource.leveldbjni</groupId>
 +      <artifactId>leveldbjni-linux64-s390x</artifactId>
@@ -211,7 +215,9 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 +    </dependency>
 
    </dependencies>
-META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86,
+
+@@ -119,7 +125,8 @@
+               META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86,
                META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86-64,
                META-INF/native/linux32/libleveldbjni.so;osname=Linux;processor=x86,
 -              META-INF/native/linux64/libleveldbjni.so;osname=Linux;processor=x86-64
@@ -263,7 +269,7 @@ META-INF/native/osx/libleveldbjni.jnilib;osname=macosx;processor=x86,
    ```
    mvn clean install -P download -Plinux64-s390x –DskipTests
    mvn clean install -P download -Plinux64,all -DskipTests
-cp /<source_root>/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<source_root>/.m2/repository/org/fusesource/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
+cp ${LEVELDBJNI_HOME}/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<source_root>/.m2/repository/org/fusesource/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
    ```
 
 ##Step 2: Testing (Optional)  
