@@ -130,7 +130,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 
     ```
     cd /<source_root>/
-    git clone https://github.com/google/leveldb.git
+    git clone https://github.com/chirino/leveldb.git
     git clone https://github.com/fusesource/leveldbjni.git
     ```
 
