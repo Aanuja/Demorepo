@@ -232,7 +232,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
          </configuration>
 ```
 
-  * Create file `${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x/pom.xml` with the below contents 
+  * Create a new file `${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x/pom.xml` with the below contents 
   
 ```diff
 @@ -0,0 +1,113 @@
@@ -383,6 +383,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
  * Build the jar file and place it in destination folder
 
    ```
+   cd ${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x
    mvn clean install -P download -Plinux64-s390x –DskipTests
    mvn clean install -P download -Plinux64,all -DskipTests
 cp ${LEVELDBJNI_HOME}/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<source_root>/.m2/repository/org/fusesource/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
