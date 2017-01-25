@@ -232,7 +232,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
          </configuration>
 ```
 
-  * Create file `${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x/pom.xml` and add the contents as shown below 
+  * Create file `${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x/pom.xml` with the below contents 
   
 ```diff
 @@ -0,0 +1,113 @@
