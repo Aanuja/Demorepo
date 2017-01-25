@@ -112,7 +112,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
     
 ####1.7) Build LevelDB JNI jar
 _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not compatible with s390x.
-               The instructions below are steps to build LevelDB JNI jar to support s390x._
+               Build LevelDB JNI jar to support s390x using below instructions._
 
   * Download and configure Snappy
       
@@ -120,7 +120,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
     cd /<source_root>/
     wget https://github.com/google/snappy/releases/download/1.1.3/snappy-1.1.3.tar.gz
     tar -zxvf  snappy-1.1.3.tar.gz
-    export SNAPPY_HOME='pwd/snappy-1.1.3'
+    export SNAPPY_HOME=`pwd`/snappy-1.1.3
     cd ${SNAPPY_HOME}
     ./configure --disable-shared --with-pic
     make
@@ -137,8 +137,8 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
   * Set the environment variables
 
     ```
-    export LEVELDB_HOME=`pwd/leveldb`
-    export LEVELDBJNI_HOME=`pwd/leveldbjni`
+    export LEVELDB_HOME=`pwd`/leveldb
+    export LEVELDBJNI_HOME=`pwd`/leveldbjni
     export LIBRARY_PATH=${SNAPPY_HOME}
     export C_INCLUDE_PATH=${LIBRARY_PATH}
     export CPLUS_INCLUDE_PATH=${LIBRARY_PATH}
