@@ -239,8 +239,8 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 
   * Create the new pom.xml for the above . verify if s390x entries present in the below listed files.
 
-    `../leveldbjni/src/main/native-package/configure`
-    `../leveldbjni/src/main/native-package/m4/libtool.m4`
+    `${LEVELDBJNI_HOME}/leveldbjni/src/main/native-package/configure`
+    `${LEVELDBJNI_HOME}/leveldbjni/src/main/native-package/m4/libtool.m4`
 
 *  Modify the below file as per the diff contents
    
