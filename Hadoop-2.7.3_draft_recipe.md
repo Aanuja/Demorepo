@@ -156,6 +156,28 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
 +    #elif defined(__s390x__) || defined(__s390__)
 +    #define ARCH_CPU_S390_FAMILY 1
  #endif
+ 
+ 
+#define LEVELDB_HAVE_MEMORY_BARRIER
+
++// S390
++#elif defined(ARCH_CPU_S390_FAMILY)
++
++inline void MemoryBarrier() {
++  asm volatile("bcr 15,0" : : : "memory");
++}
++#define LEVELDB_HAVE_MEMORY_BARRIER
++
+ #endif
+ 
+
+#undef LEVELDB_HAVE_MEMORY_BARRIER
+#undef ARCH_CPU_X86_FAMILY
+#undef ARCH_CPU_ARM_FAMILY
++#undef ARCH_CPU_S390_FAMILY
+
+}  // namespace port
+}  // namespace leveldb
 ``` 
 
   * Configure LevelDB
