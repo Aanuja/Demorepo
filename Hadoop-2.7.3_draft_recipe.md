@@ -22,7 +22,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 
 	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
           ```
-          sudo yum install -y wget
+          sudo yum install -y tar wget autoconf libtool automake gcc-c++ make git bzip2 curl unzip zlib zlib-devel bison flex  binutils-devel
           ```
 			
   * SLES 11 SP4
@@ -31,7 +31,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 
 	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
            ```
-           sudo zypper install -y wget
+           sudo zypper install -y tar wget autoconf libtool automake gcc-c++ make git bzip2 curl unzip zlib zlib-devel
            ```
 			
   * SLES 12
@@ -40,7 +40,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 
 	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
            ```
-           sudo zypper install -y wget
+           sudo zypper install -y tar wget autoconf libtool automake gcc-c++ make git bzip2 curl unzip zlib zlib-devel
            ```
 		
   * SLES 12 SP2
@@ -48,7 +48,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 	*  With IBM SDK   
 	     
            ```
-           sudo zypper install -y wget java-1.8.0-ibm java-1.8.0-ibm-devel
+           sudo zypper install -y tar wget autoconf libtool automake gcc-c++ make git bzip2 curl unzip zlib zlib-devel java-1.8.0-ibm java-1.8.0-ibm-devel
            ```
 		
 * Ubuntu 16.04
@@ -58,14 +58,14 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
            ```
            sudo apt-get update
-	   sudo apt-get install -y git wget maven cmake make
+	   sudo apt-get install -y tar wget autoconf libtool automake g++ make git bzip2 curl unzip zlib1g-dev maven cmake
            ```
 
 	*  With Open JDK
 		
 	   ```
 	   sudo apt-get update
-	   sudo apt-get install openjdk-8-jdk cmake make pkg-config maven wget
+	   sudo apt-get install tar wget autoconf libtool automake g++ make git bzip2 curl unzip zlib1g-dev maven openjdk-8-jdk cmake openssl libssl-dev pkg-config 
 	   ```
 
 ####1.2) Install maven ( For RHEL and SLES only)
@@ -393,5 +393,6 @@ cp ${LEVELDBJNI_HOME}/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<
 ##Step 2: Testing (Optional)  
 
   ```
+  cd /<source_root>/
   mvn test -fn
   ```
