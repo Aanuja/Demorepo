@@ -2,7 +2,7 @@
 
 The instructions provided below specify the steps to build Apache Hadoop 2.7.3 on IBM z Systems for following distributions:
 * RHEL (6.8)
-* SLES 11 SP4, 12, 12 SP2)
+* SLES (11 SP4, 12, 12 SP2)
 * Ubuntu (16.04)
 
 _**General Notes:**_   
