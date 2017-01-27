@@ -128,7 +128,7 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
     make
     ```
 
-  * Download the source code for LevelDB & LevelDB JNI
+  * Download the source code for LevelDB and LevelDB JNI
 
     ```
     cd /<source_root>/
