@@ -75,7 +75,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
   cd /<source_root>/
   wget http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
   tar -xvzf apache-maven-3.3.9-bin.tar.gz
-  export PATH=$PATH:/home/test/apache-maven-3.3.9/bin/
+  export PATH=$PATH:/<source_root>/apache-maven-3.3.9/bin/
   ```
 		
 ####1.3) Download source code
