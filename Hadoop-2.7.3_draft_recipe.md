@@ -98,6 +98,7 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
     
   ```
   export MAVEN_OPTS="-Xmx2048m -XX:MaxPermSize=1024m"
+  export JVM_ARGS="-Xms1024m -Xmx1024m"
   export JAVA_HOME=<path_to_java>
   export PATH=$JAVA_HOME/bin:$PATH 
   ```
