@@ -55,10 +55,10 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 	
 	*  With IBM SDK   
 
-	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.
+	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
 	   
            ```  
-           sudo apt-get update
+        sudo apt-get update
 	   sudo apt-get install -y tar wget autoconf libtool automake g++ make git bzip2 curl unzip zlib1g-dev maven cmake
            ```
 
