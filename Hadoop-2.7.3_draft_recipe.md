@@ -55,7 +55,8 @@ Apache Hadoop requires Google Protobuf 2.5.0, please see [Building Google Protob
 	
 	*  With IBM SDK   
 
-	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
+	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.
+	   
            ```
            sudo apt-get update
 	   sudo apt-get install -y tar wget autoconf libtool automake g++ make git bzip2 curl unzip zlib1g-dev maven cmake
@@ -387,12 +388,12 @@ _**Note:** Few test failure are seen as the downloaded LevelDB JNI jar is not co
    cd ${LEVELDBJNI_HOME}/leveldbjni-linux64-s390x
    mvn clean install -P download -Plinux64-s390x –DskipTests
    mvn clean install -P download -Plinux64,all -DskipTests
-cp ${LEVELDBJNI_HOME}/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<source_root>/.m2/repository/org/fusesource/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
+   cp ${LEVELDBJNI_HOME}/leveldbjni/leveldbjni-all/target/leveldbjni-all-1.8.jar /<source_root>/.m2/repository/org/fusesource/leveldbjni/leveldbjni-all/1.8/leveldbjni-all-1.8.jar
    ```
 
 ##Step 2: Testing (Optional)  
 
   ```
-  cd /<source_root>/
+  cd /<source_root>/hadoop-rel-release-2.7.3/
   mvn test -fn
   ```
