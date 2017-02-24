@@ -172,9 +172,9 @@ pip3 install tox
 
 ```
 cd /<source_root>/
-git clone https://github.com/linux-on-ibm-z/dcos.git
+git clone https://github.com/dcos/dcos.git 
 cd dcos/
-git checkout 1.8_s390x
+git checkout 1.8
 ```
 
 ### 3. Edit the following files to replace ubuntu:14.04.4 with s390x/ubuntu image
