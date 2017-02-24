@@ -278,7 +278,7 @@ tox
 _**Note:**_ 
 If Test-case failures related to test_version are seen, do the following:
 
-Edit the '/<source_root>/dcos/pytest/test_installer_backend.py' ap per the diff contents given below:
+Edit the `/<source_root>/dcos/pytest/test_installer_backend.py` ap per the diff contents given below:
 
 ```diff
 @@ -23,7 +23,7 @@ def test_version(monkeypatch):
