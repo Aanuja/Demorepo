@@ -278,32 +278,17 @@ tox
 _**Note:**_ 
 If Test-case failures related to test_version are seen, do the following:
 
-Edit the test_version test 
+Edit the '/<source_root>/dcos/pytest/test_installer_backend.py' ap per the diff contents given below:
 
-In /<source_root>/dcos/pytest/test_installer_backend.py change the value of following :
+```diff
+@@ -23,7 +23,7 @@ def test_version(monkeypatch):
+     monkeypatch.setenv('BOOTSTRAP_VARIANT', 'some-variant')
+     version_data = subprocess.check_output(['dcos_installer', '--version']).decode()
+     assert json.loads(version_data) == {
+-        'version': '1.8-dev',
++        'version': '1.8',
+         'variant': 'some-variant'
 ```
-$vi /etc/ssh/sshd_config
-```
-```
-def test_version(monkeypatch):
-	monkeypatch.setenv('BOOTSTRAP_VARIANT', 'some-variant')
-	version_data = subprocess.check_output(['dcos_installer', '--version']).decode()
-	assert json.loads(version_data) == {
-		'version': '1.8-dev',
-		'variant': 'some-variant'
-	}
-```
-Replace version to '1.8' instead of '1.8-dev'
-```
-def test_version(monkeypatch):
-	monkeypatch.setenv('BOOTSTRAP_VARIANT', 'some-variant')
-	version_data = subprocess.check_output(['dcos_installer', '--version']).decode()
-	assert json.loads(version_data) == {
-		'version': '1.8',
-		'variant': 'some-variant'
-	}
-```
-
 
 #### 6.2 Build DC/OS ####
 ```
