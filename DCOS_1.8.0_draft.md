@@ -191,46 +191,77 @@ git checkout 1.8
  /<source_root>/dcos/pkgpanda/build/tests/resources/variant/ee.buildinfo.json
 ```
 
-### 4. Edit the gen installer Dockerfile
+### 4. Edit the gen installer Dockerfile as per the diff contents given below
 ```
 $ vi /<source_root>/dcos/gen/installer/bash/Dockerfile.in
 ```
-Modify the below lines :
+
+```diff
+@@ -2,8 +2,8 @@ FROM alpine:3.4
+ MAINTAINER help@dcos.io
+
+ WORKDIR /
+-RUN apk add --update curl ca-certificates git openssh tar xz zlib && rm -rf /var/cache/apk/*
+-RUN curl -fLsS --retry 20 -Y 100000 -y 60 -o glibc-2.23-r3.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk && apk --allow-
++RUN apt-get update
++RUN apt-get install -y curl ca-certificates git ssh tar xz-utils glibc-source zlib1g-dev zlibc
+ VOLUME ["/genconf"]
 ```
-WORKDIR /
-RUN apk add --update curl ca-certificates git openssh tar xz zlib && rm -rf /var/cache/apk/*
-RUN curl -fLsS --retry 20 -Y 100000 -y 60 -o glibc-2.23-r3.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk && apk --allow-untrusted add glibc-2.23-r3.apk && rm glibc-2.23-r3.apk && rm -rf /var/cache/apk/*
-VOLUME ["/genconf"]
-```
-Replace the RUN steps with the below:
-```
-WORKDIR /
-RUN apt-get update
-RUN apt-get install -y curl ca-certificates git ssh tar xz-utils glibc-source zlib1g-dev zlibc
-VOLUME ["/genconf"]
-``` 
  
-### 5. Modify the dcos-builder dockerfile
+### 5. Modify the dcos-builder dockerfile as per the diff contents given below
 ```
 $ vi /<source_root>/dcos/pkgpanda/docker/dcos-builder/Dockerfile 
 ```
 
-Modify the file with the following:
-```
-FROM s390x/ubuntu
-.
-.
-.
+```diff
+@@ -1,39 +1,14 @@
+-FROM ubuntu:14.04.4
+-MAINTAINER help@dcos.io
++FROM s390x/ubuntu
++.
++.
++.
 
-  libcurl4-openssl-dev \
-.
-  curl \
-.
-  linux-headers-4.4.0-57-generic
-.
-  gettext-base \
-  unzip
-RUN pip install awscli
+-RUN apt-get -qq update && apt-get -y install \
+-  autoconf \
+-  automake \
+-  cmake \
+-  make \
+-  gcc \
+-  cpp \
+-  patch \
+-  python-dev \
+-  python-pip \
+-  git \
+-  libtool \
+-  default-jdk \
+-  default-jre \
+-  gzip \
+-  zlib1g-dev \
+   libcurl4-openssl-dev \
+-  python-setuptools \
+-  dpkg-dev \
+-  libsasl2-dev \
+-  maven \
+-  libapr1-dev \
+-  libsvn-dev \
+-  ruby \
++.
+   curl \
+-  wget \
+-  scala \
+-  xz-utils \
+-  libpopt-dev \
+-  libnl-3-dev \
+-  libnl-genl-3-dev \
+-  linux-headers-3.19.0-21-generic \
+-  pkg-config \
++.
++  linux-headers-4.4.0-57-generic
++.
+   gettext-base \
+   unzip
+ RUN pip install awscli
 ```
 
 _**Note:**_ Replace the linux-headers-3.19.* with linux-headers-4.4.0-57-generic(available for s390x/ubuntu).
