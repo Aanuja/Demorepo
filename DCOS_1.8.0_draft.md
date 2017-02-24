@@ -153,9 +153,9 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 
 ### 1. Install dependencies
 
-RHEL 7.2
+RHEL 7.3
 ```
-pip3 install tox
+pip install tox
 ```
 
 SLES 12 SP1
