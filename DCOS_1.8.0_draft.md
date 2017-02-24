@@ -33,7 +33,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	```
 
 	
-*	 **golang 1.5.2 image** or above -- Create a golang:1.7 image using the below dockerfile.
+*	 **golang 1.5.2 image** or above -- Create a golang:1.7 image using the below contents.
 
   _**Notes:**_ 
  
@@ -43,9 +43,6 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	docker commit <container-id> golang:1.6
 	```
         
-	```
-	$vi Dockerfile
-	```
 	Add the below content to the dockerfile.
 	```
 	FROM s390x/ubuntu
@@ -72,10 +69,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	```
 
 	
-*	 **jplock/zookeeper image** -- Create a jplock/zookeeper image using the below dockerfile.
-	```
-	$vi Dockerfile
-	```
+*	 **jplock/zookeeper image** -- Create a jplock/zookeeper image using the below contents.
 	
 	Add the below content to the dockerfile.
 	```
@@ -115,12 +109,8 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	docker tag s390x/ubuntu alpine:3.4
 	```
 
-*	 **node:4.4.4 image** -- Create a node image using the below dockerfile.
+*	 **node:4.4.4 image** -- Create a node image using the below contents.
 
-	```
-	$vi Dockerfile
-	```
-	
 	Add the below content to the dockerfile.
 	```
 	# Base image
@@ -156,16 +146,6 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 RHEL 7.3
 ```
 pip install tox
-```
-
-SLES 12 SP1
-```
-pip3 install tox docopt
-```
-
-Ubuntu 16.04
-```
-pip3 install tox
 ```
 
 ### 2. Get the source
