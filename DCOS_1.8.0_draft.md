@@ -20,7 +20,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 
     Install the following dependencies:
 	```
-        apt-get update
+       apt-get update
 	apt-get install -y wget tar xz-utils gcc make sudo patch tcl-tls libreadline-dev libssl-dev python-lzma libncurses5-dev libncurses5 ncurses-base
 	```
 	
@@ -50,7 +50,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	```
 	FROM s390x/ubuntu
 	
-	RUN apt-get -qq update && apt-get -y install \
+	RUN apt-get -qq update && apt-get -y install make \
         wget \
         tar \
         git && \
