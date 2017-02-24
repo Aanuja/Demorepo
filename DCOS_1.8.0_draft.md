@@ -171,10 +171,9 @@ git checkout 1.8
  /<source_root>/dcos/pkgpanda/build/tests/resources/variant/ee.buildinfo.json
 ```
 
-### 4. Edit the gen installer Dockerfile as per the diff contents given below
-```
-$ vi /<source_root>/dcos/gen/installer/bash/Dockerfile.in
-```
+### 4. Modify the gen installer Dockerfile as per the diff contents
+
+Edit file `/<source_root>/dcos/gen/installer/bash/Dockerfile.in`
 
 ```diff
 @@ -2,8 +2,8 @@ FROM alpine:3.4
@@ -189,9 +188,8 @@ $ vi /<source_root>/dcos/gen/installer/bash/Dockerfile.in
 ```
  
 ### 5. Modify the dcos-builder dockerfile as per the diff contents given below
-```
-$ vi /<source_root>/dcos/pkgpanda/docker/dcos-builder/Dockerfile 
-```
+
+Edit file `/<source_root>/dcos/pkgpanda/docker/dcos-builder/Dockerfile` 
 
 ```diff
 @@ -1,39 +1,14 @@
@@ -246,7 +244,6 @@ $ vi /<source_root>/dcos/pkgpanda/docker/dcos-builder/Dockerfile
 
 _**Note:**_ Replace the linux-headers-3.19.* with linux-headers-4.4.0-57-generic(available for s390x/ubuntu).
 
-
 ### 6. Configure, test and build DC/OS
 
 #### 6.1 Run local code quality tests ####
@@ -258,7 +255,7 @@ tox
 _**Note:**_ 
 If Test-case failures related to test_version are seen, do the following:
 
-Edit the `/<source_root>/dcos/pytest/test_installer_backend.py` ap per the diff contents given below:
+Edit file `/<source_root>/dcos/pytest/test_installer_backend.py` as per the diff contents:
 
 ```diff
 @@ -23,7 +23,7 @@ def test_version(monkeypatch):
