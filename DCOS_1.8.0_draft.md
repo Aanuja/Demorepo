@@ -33,7 +33,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	```
 
 	
-*	 **golang 1.5.2 image** or above -- Instructions for building golang image can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go).
+*	 **golang 1.5.2 image** or above -- Create a golang:1.7 image using the below dockerfile.
 
   _**Notes:**_ 
  
@@ -42,20 +42,33 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	```
 	docker commit <container-id> golang:1.6
 	```
-
-2.	GOPATH variable needs to be set. Create a dockerfile and execute it to add GOPATH to the environment as shown below:
+        
 	```
 	$vi Dockerfile
 	```
-	Add the following:
+	Add the below content to the dockerfile.
 	```
-	FROM golang:1.6
-	RUN apt-get install -y git
-	ENV GOPATH /go
+	FROM s390x/ubuntu
+	
+	RUN apt-get -qq update && apt-get -y install \
+        wget \
+        tar \
+        git && \
+        mkdir gosrc
+
+        WORKDIR gosrc
+        RUN wget https://storage.googleapis.com/golang/go1.7.5.linux-s390x.tar.gz && \
+        chmod ugo+r go1.7.5.linux-s390x.tar.gz && \
+        tar -C /usr/local -xzf go1.7.5.linux-s390x.tar.gz
+
+        ENV PATH $PATH:/usr/local/go/bin
+        ENV GOPATH /go
+        RUN  go version
 	```
+	
 	Build the dockerfile
 	```
-	docker build -t golang:1.6 .
+	docker build -t golang:1.7 .
 	```
 
 	
