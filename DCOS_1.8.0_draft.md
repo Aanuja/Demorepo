@@ -237,7 +237,20 @@ Edit file `/<source_root>/dcos/pytest/test_installer_backend.py` as per the diff
 cd /<source_root>/dcos
 ./build_local.sh
 ```
-_**Notes:**_    
+_**Notes:**_  _If build failures are seen, refer to the below listed failures and the steps to resolve the same._  
+
+  1. Makefile:284: recipe for target 'build_crypto' failed
+     Edit file `/<source_root>/dcos/packages/openssl/build` as per the diff contents
+```diff
+@@ -10,7 +10,7 @@ pushd "/pkg/src/openssl"
+   shared \
+   zlib \
+   no-krb5 \
+-  linux-x86_64 \
++  linux-generic64 \
+   -Wa,--noexecstack \
+   -O2 -DFORTIFY_SOURCE=2
+```
 
 * If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package do the below:
 ```
