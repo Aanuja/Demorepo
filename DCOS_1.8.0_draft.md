@@ -192,54 +192,19 @@ Edit file `/<source_root>/dcos/gen/installer/bash/Dockerfile.in`
 Edit file `/<source_root>/dcos/pkgpanda/docker/dcos-builder/Dockerfile` 
 
 ```diff
-@@ -1,39 +1,14 @@
+@@ -1,4 +1,4 @@
 -FROM ubuntu:14.04.4
--MAINTAINER help@dcos.io
 +FROM s390x/ubuntu
-+.
-+.
-+.
+ MAINTAINER help@dcos.io
 
--RUN apt-get -qq update && apt-get -y install \
--  autoconf \
--  automake \
--  cmake \
--  make \
--  gcc \
--  cpp \
--  patch \
--  python-dev \
--  python-pip \
--  git \
--  libtool \
--  default-jdk \
--  default-jre \
--  gzip \
--  zlib1g-dev \
-   libcurl4-openssl-dev \
--  python-setuptools \
--  dpkg-dev \
--  libsasl2-dev \
--  maven \
--  libapr1-dev \
--  libsvn-dev \
--  ruby \
-+.
-   curl \
--  wget \
--  scala \
--  xz-utils \
--  libpopt-dev \
--  libnl-3-dev \
--  libnl-genl-3-dev \
+ RUN apt-get -qq update && apt-get -y install \
+@@ -32,7 +32,7 @@ RUN apt-get -qq update && apt-get -y install \
+   libpopt-dev \
+   libnl-3-dev \
+   libnl-genl-3-dev \
 -  linux-headers-3.19.0-21-generic \
--  pkg-config \
-+.
-+  linux-headers-4.4.0-57-generic
-+.
-   gettext-base \
-   unzip
- RUN pip install awscli
++  linux-headers-4.4.0-57-generic \
+   pkg-config \
 ```
 
 _**Note:**_ Replace the linux-headers-3.19.* with linux-headers-4.4.0-57-generic(available for s390x/ubuntu).
