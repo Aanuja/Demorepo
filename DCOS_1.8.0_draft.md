@@ -252,6 +252,21 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
    -O2 -DFORTIFY_SOURCE=2
 ```
 
+  2. lj_arch.h:53:2: error: #error "No support for this architecture (yet)"
+     Edit file `/<source_root>/dcos/packages/adminrouter/buildinfo.json`
+```diff
+@@ -3,8 +3,8 @@
+   "sources" :{
+       "nginx": {
+           "kind": "url_extract",
+-          "url": "https://openresty.org/download/openresty-1.9.15.1.tar.gz",
+-          "sha1": "491a84d70ed10b79abb9d1a7496ee57a9244350b"
++          "url": "http://9.12.19.112:8080/openresty-1.9.15.1.tar.gz",
++          "sha1": "7da21a8e94717fd5d3c8b3cab2ed4d69c5b0a77f"
+       },
+       "adminrouter": {
+```
+
 * If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package do the below:
 ```
 $vi /<source_root>/dcos/packages/adminrouter/build
