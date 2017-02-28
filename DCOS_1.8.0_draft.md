@@ -19,30 +19,38 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 *	 **s390x/ubuntu image** -- Create a container with the following s390x/ubuntu image installed on it.
 
     Install the following dependencies:
+    
 	```
-       apt-get update
+	apt-get update
 	apt-get install -y wget tar xz-utils gcc make sudo patch tcl-tls libreadline-dev libssl-dev python-lzma libncurses5-dev libncurses5 ncurses-base
 	```
 	
 	**Python 3.4** or above -- Instructions for building Python 3.4.3 can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.4.3).
 	
-	_**Note:**_ Install Python 3.4+ in the s390x/ubuntu image before saving/commiting it. Verify pip and execute the below steps.
 	```
 	ln -s /usr/local/bin/pip3.4 /usr/local/bin/pip
 	pip --version
 	```
-
+	
+       Save the container as s390x/ubuntu image.
+	
+	```
+	docker commit <container-id> s390x/ubuntu
+	```
 	
 *	 **golang 1.5.2 image** or above -- Create a golang:1.7 image using the below contents.
 
   _**Notes:**_ 
  
-1.	For RHEL 7.2 we need to install 'make', as well as install git 2.2.1 from source in the golang image as a dependency.
+        ---   this is not verified ----
+	For RHEL 7.2 we need to install 'make', as well as install git 2.2.1 from source in the golang image as a dependency.
 	To create an image of the golang container do the following for example:
 	```
 	docker commit <container-id> golang:1.6
 	```
         
+	--   this is not verified ----
+	
 	Add the below content to the dockerfile.
 	```
 	FROM s390x/ubuntu
@@ -68,7 +76,6 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	docker build -t golang:1.7 .
 	```
 
-	
 *	 **jplock/zookeeper image** -- Create a jplock/zookeeper image using the below contents.
 	
 	Add the below content to the dockerfile.
@@ -267,7 +274,7 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
        "adminrouter": {
 ```
 
- 3. ./configure: error: the HTTP rewrite module requires the PCRE library
+  3. ./configure: error: the HTTP rewrite module requires the PCRE library
  
 * If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package do the below:
 ```
