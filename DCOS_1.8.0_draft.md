@@ -38,7 +38,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	docker commit <container-id> s390x/ubuntu
 	```
 	
-*	 **golang 1.5.2 image** or above -- Create a golang:1.7 image using the below contents.
+*	 **golang 1.5.2 image** or above -- Create a golang image using the below contents.
 
   _**Notes:**_ 
  
@@ -73,7 +73,7 @@ DC/OS master branch has been successfully built on Linux on z Systems. The follo
 	
 	Build the dockerfile
 	```
-	docker build -t golang:1.7 .
+	docker build -t golang:1.6 .
 	```
 
 *	 **jplock/zookeeper image** -- Create a jplock/zookeeper image using the below contents.
