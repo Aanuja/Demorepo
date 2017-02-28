@@ -267,6 +267,8 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
        "adminrouter": {
 ```
 
+ 3. ./configure: error: the HTTP rewrite module requires the PCRE library
+ 
 * If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package do the below:
 ```
 $vi /<source_root>/dcos/packages/adminrouter/build
