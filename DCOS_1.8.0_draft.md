@@ -276,32 +276,31 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
 
   3. ./configure: error: the HTTP rewrite module requires the PCRE library
  
-  4. If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package do the below:
-```
-$vi /<source_root>/dcos/packages/adminrouter/build
-```
-Modify the below line 
-```
-cp /lib/x86_64-linux-gnu/libpcre.so.3 "$PKG_PATH/lib/libpcre.so.3"
-```
-Replace 'x86_64-linux-gnu/libpcre.so.3' with the below:
-```
-cp /lib/s390x-linux-gnu/libpcre.so.3 "$PKG_PATH/lib/libpcre.so.3"
+  4. If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package modify the file `/<source_root>/dcos/packages/adminrouter/build` as per the diff contents
+
+```diff
+@@ -34,7 +34,7 @@ popd
+
+ # Copy in needed libraries.
+ mkdir -p "$PKG_PATH/lib"
+-cp /lib/x86_64-linux-gnu/libpcre.so.3 "$PKG_PATH/lib/libpcre.so.3"
++cp /lib/s390x-linux-gnu/libpcre.so.3 "$PKG_PATH/lib/libpcre.so.3"
+
+ systemd_master="$PKG_PATH"/dcos.target.wants_master/dcos-adminrouter.service
+ mkdir -p "$(dirname "$systemd_master")"
 ```
 
-  5.  If you get an error in the ncurses module in file lib_gen.c as follows 'error: expected ')' before 'int''. Downgrade ncurses to version 5.7 in the buildinfo file as shown below:
-```
-$vi /<source_root>/dcos/packages/ncurses/buildinfo.json
-```
-Modify the below lines 
-```
-    "url": "http://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz",
-    "sha1": "acd606135a5124905da770803c05f1f20dd3b21c"
-```
-Replace the url and sha1 with the below:
-```
-    "url": "http://ftp.gnu.org/gnu/ncurses/ncurses-5.7.tar.gz",
-    "sha1": "acd606135a5124905da770803c05f1f20dd3b21c"
+  5.  If you get an error in the ncurses module in file lib_gen.c as follows 'error: expected ')' before 'int''. Downgrade ncurses to version 5.7 in file `/<source_root>/dcos/packages/ncurses/buildinfo.json` as shown below
+
+```diff
+@@ -2,6 +2,6 @@
+   "single_source" : {
+     "kind": "url_extract",
+     "url": "http://ftp.gnu.org/gnu/ncurses/ncurses-5.7.tar.gz",
+-    "sha1": "acd606135a5124905da770803c05f1f20dd3b21c"
++    "sha1": "8233ee56ed84ae05421e4e6d6db6c1fe72ee6797"
+   }
+ }
 ```
 
 * For 'auto_ptr deprecated error for boost in mesos-modules do the below:
