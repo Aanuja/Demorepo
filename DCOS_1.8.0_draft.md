@@ -273,11 +273,8 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
        },
        "adminrouter": {
 ```
-
-  3. ./configure: error: the HTTP rewrite module requires the PCRE library
  
-  4. If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package modify the file `/<source_root>/dcos/packages/adminrouter/build` as per the diff contents
-
+  3.  If you encounter a failure with the error 'cp: cannot stat '/lib/x86_64-linux-gnu/libpcre.so.3': No such file or directory' in the adminrouter package modify the file `/<source_root>/dcos/packages/adminrouter/build` as per the diff contents
 ```diff
 @@ -34,7 +34,7 @@ popd
 
@@ -290,8 +287,7 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
  mkdir -p "$(dirname "$systemd_master")"
 ```
 
-  5.  If you get an error in the ncurses module in file lib_gen.c as follows 'error: expected ')' before 'int''. Downgrade ncurses to version 5.7 in file `/<source_root>/dcos/packages/ncurses/buildinfo.json` as shown below
-
+  4.  If you get an error in the ncurses module in file lib_gen.c as follows 'error: expected ')' before 'int''. Downgrade ncurses to version 5.7 in file `/<source_root>/dcos/packages/ncurses/buildinfo.json` as shown below
 ```diff
 @@ -2,6 +2,6 @@
    "single_source" : {
