@@ -299,6 +299,21 @@ _**Notes:**_  _If build failures are seen, refer to the below listed failures an
  }
 ```
 
+ 5. ERROR Building packages: Validation error when fetching sources for package:Provided sha1 didn't match sha1 of downloaded file, corrupt download for `/<dcos_path>/logrotate-3.9.1.tar.gz.corrupt`.
+ Edit file `/<source_root>/dcos/packages/logrotate/buildinfo.json` as per the diff contents
+```diff
+@@ -1,7 +1,7 @@
+ {
+   "single_source": {
+     "kind": "url_extract",
+-    "url": "https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.9.1.tar.gz",
+-    "sha1": "3ed28b8b4b9f3a9175a5510b53217a60db8fdf32"
++    "url": "http://pkgs.fedoraproject.org/repo/pkgs/logrotate/logrotate-3.9.1.tar.gz/4492b145b6d542e4a2f41e77fa199ab0/logrotate-3.9.1.tar.gz",
++    "sha1": "7ba734cd1ffa7198b66edc4bca17a28ea8999386"
+   }
+ }
+```
+
 * For 'auto_ptr deprecated error for boost in mesos-modules do the below:
 ```
 $ vi /<source_root>/dcos/packages/mesos/build
