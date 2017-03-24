@@ -49,3 +49,6 @@ Failure 3 =>
 Fix => Add "dcos_url" & "dcos_acs_token" from ~/.dcos/dcos.toml file to:
 vi tests/data/dcos.toml
 Replace "dcos.snakeoil.mesosphere.com" to 9.47.78.73 & add the token
+
+Failure 4 => Permissions '0o644' for configuration file 'tests/data/config/parse_error.toml' are too open. File must only be accessible by owner. Aborting...
+Fix =>  chmod 600 tests/data/config/parse_error.toml
