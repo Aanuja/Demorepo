@@ -46,5 +46,6 @@ Fix =>  vi tests/integrations/test_config.py
 Replace "dcos.snakeoil.mesosphere.com" to 9.47.78.73
 
 Failure 3 => 
-Fix => vi tests/data/dcos.toml
-Replace "dcos.snakeoil.mesosphere.com" to 9.47.78.73
+Fix => Add "dcos_url" & "dcos_acs_token" from ~/.dcos/dcos.toml file to:
+vi tests/data/dcos.toml
+Replace "dcos.snakeoil.mesosphere.com" to 9.47.78.73 & add the token
